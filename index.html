@@ -3,59 +3,99 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ポ・トロ 診断テスト（7タイプ／9問）</title>
+<title>ご主人様診断｜ポ・トロ（レースver.）</title>
+<meta name="description" content="貴方はどんなご主人様？7タイプ診断で“あなた像”を楽しくチェック。最後は決め台詞つき！" />
 <style>
-  :root {
-    --bg: #fff9fe;
-    --card: #ffffff;
-    --ink: #2b2b2b;
-    --accent: #ff66b3;
-    --muted: #777;
+  :root{
+    --bg:#fff8fc;
+    --card:#ffffff;
+    --ink:#2a2a2a;
+    --accent:#ff68b7;
+    --accent-2:#ffc2e1;
+    --muted:#7a7a7a;
   }
-  html, body {
-    margin: 0; padding: 0; background: var(--bg); color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", "Helvetica Neue", Arial, sans-serif;
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo","Helvetica Neue",Arial,sans-serif;}
+  body{
+    background-image:
+      radial-gradient(rgba(255,168,214,.25) 1px, transparent 1px),
+      radial-gradient(rgba(255,168,214,.18) 1px, transparent 1px);
+    background-size: 16px 16px, 24px 24px;
+    background-position: 0 0, 8px 8px;
   }
-  .container { max-width: 860px; margin: 24px auto; padding: 16px; }
-  .card {
-    background: var(--card); border-radius: 16px; box-shadow: 0 6px 24px rgba(0,0,0,0.06);
-    padding: 20px; margin-bottom: 16px;
+  .container{max-width:940px;margin:26px auto;padding:16px}
+  .card{
+    position:relative;
+    background:var(--card);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 10px 28px rgba(255,104,183,.18), 0 6px 16px rgba(0,0,0,.06);
+    border:12px solid transparent;
+    border-image-source:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'>\
+<defs>\
+<pattern id='p' width='20' height='20' patternUnits='userSpaceOnUse'>\
+<circle cx='10' cy='10' r='9' fill='none' stroke='%23ffcbe7' stroke-width='1.6'/>\
+<circle cx='10' cy='10' r='6.5' fill='none' stroke='%23ffe3f3' stroke-width='1.2'/>\
+<circle cx='10' cy='10' r='3.5' fill='none' stroke='%23ffd8ee' stroke-width='1.2'/>\
+</pattern>\
+</defs>\
+<rect x='0' y='0' width='60' height='60' fill='url(%23p)'/>\
+</svg>");
+    border-image-slice: 30;
+    border-image-repeat: round;
   }
-  h1 { font-size: 1.6rem; margin: 0 0 8px; }
-  p.lead { color: var(--muted); margin-top: 4px; }
-  .q { margin: 16px 0 12px; font-weight: 700; }
-  .opts { display: grid; grid-template-columns: 1fr; gap: 8px; }
-  .opt {
-    border: 1.5px solid #f3d2e7; border-radius: 12px; padding: 12px 14px; cursor: pointer;
-    transition: transform .06s ease, border-color .15s ease, background .15s ease;
-    user-select: none; background: #fff;
+  h1{font-size:1.8rem;margin:0 0 10px;font-weight:900;letter-spacing:.5px;}
+  p.lead{color:var(--muted);margin:2px 0 0}
+  .ribbon{
+    display:inline-block;
+    background:linear-gradient(180deg,var(--accent),#ff4ea9);
+    color:#fff;font-weight:900;padding:10px 16px;border-radius:10px;
+    position:relative; margin:2px 0 10px;
+    box-shadow:0 8px 16px rgba(255,104,183,.35);
   }
-  .opt:hover { transform: translateY(-1px); }
-  .opt.selected { border-color: var(--accent); background: #fff2f8; }
-  .controls { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
-  button {
-    appearance: none; border: none; border-radius: 999px; padding: 12px 18px;
-    font-weight: 700; cursor: pointer; background: var(--accent); color: white;
-    box-shadow: 0 4px 14px rgba(255,102,179,.35);
+  .ribbon:before,.ribbon:after{
+    content:""; position:absolute; top:100%; width:0; height:0; border:8px solid transparent;
   }
-  button.secondary { background: #f2f2f2; color: #333; box-shadow: none; }
-  .result {
-    border: 2px dashed #ffd3e9; border-radius: 16px; padding: 16px; background: #fffdfd;
+  .ribbon:before{left:10px; border-top-color:#d43d8f;}
+  .ribbon:after{right:10px; border-top-color:#d43d8f;}
+  .q{margin:16px 0 12px;font-weight:800;}
+  .opts{display:grid;grid-template-columns:1fr;gap:9px}
+  .opt{
+    border:1.8px solid #f7d9eb;border-radius:12px;padding:12px 14px;background:#fff;cursor:pointer;user-select:none;
+    transition:transform .06s ease,border-color .2s ease,background .2s ease;
+    position:relative;
   }
-  .pill {
-    display: inline-block; padding: 6px 10px; border-radius: 999px; background: #ffe3f1; color: #b03d79; font-weight: 700; font-size: 0.9rem;
-    margin-right: 8px; margin-bottom: 6px;
+  .opt:before{
+    content:"❤"; position:absolute; left:10px; top:50%; transform:translateY(-50%);
+    opacity:.0; font-size:12px; color:#ff76bd; transition:opacity .15s ease;
   }
-  .small { color: var(--muted); font-size: 0.92rem; }
-  .footer { text-align: center; color: var(--muted); font-size: 0.86rem; margin-top: 14px; }
-  @media (min-width: 720px) { .opts { grid-template-columns: 1fr 1fr; } }
+  .opt:hover{transform:translateY(-1px)}
+  .opt.selected{border-color:var(--accent); background:#fff2f8;}
+  .opt.selected:before{opacity:.9}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+  button{
+    appearance:none;border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;
+    background:var(--accent);color:#fff;box-shadow:0 6px 20px rgba(255,104,183,.35);
+  }
+  button.secondary{background:#f3f3f3;color:#333;box-shadow:none}
+  button.ghost{background:transparent;border:2px dashed var(--accent);color:var(--accent)}
+  .result{border:2px dashed #ffd3ea;border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff, #fff6fb)}
+  .small{color:var(--muted);font-size:.95rem}
+  .share{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .share button{display:inline-flex;align-items:center;gap:8px}
+  .share .x{background:#000} .share .x span{font-weight:800}
+  .footer{text-align:center;color:var(--muted);font-size:.86rem;margin-top:14px}
+  @media (min-width:760px){ .opts{grid-template-columns:1fr 1fr} }
 </style>
 </head>
 <body>
   <div class="container">
     <div class="card">
-      <h1>ポ・トロ診断（7タイプ／9問）</h1>
-      <p class="lead">「ご主人様は〇〇タイプ！今日のお給仕は△△メイドがオススメです💖」が分かる自己診断。全9問に答えて結果をチェック！</p>
+      <span class="ribbon">PO・TORO Presents</span>
+      <h1>ご主人様診断</h1>
+      <p class="lead">「貴方はどんなご主人様？」がわかる自己診断。</p>
     </div>
 
     <div id="quiz"></div>
@@ -65,174 +105,180 @@
         <button id="btnSubmit">結果を見る</button>
         <button class="secondary" id="btnReset">やり直す</button>
       </div>
-      <p class="small">※タイプ・メイド割当・質問文はファイル内の <strong>TYPES</strong> / <strong>QUESTIONS</strong> で編集できます。</p>
     </div>
 
     <div id="resultCard" class="card" style="display:none;">
       <div class="result">
-        <div id="resultTitle" style="font-size:1.2rem; font-weight:800; margin-bottom:6px;"></div>
-        <div id="resultRecommend" style="margin-bottom:8px;"></div>
-        <div id="resultDesc" class="small"></div>
-        <div id="secondBest" class="small" style="margin-top:10px; display:none;"></div>
+        <div id="resultTitle" style="font-size:1.2rem;font-weight:900;margin-bottom:6px;"></div>
+        <div id="resultDesc" class="small" style="line-height:1.9;"></div>
+        <div class="share">
+          <button class="x" id="btnShareX" title="Xでシェア"><span>𝕏</span> でシェア</button>
+          <button class="ghost" id="btnCopy">文面をコピー</button>
+        </div>
+        <div id="copyHint" class="small" style="display:none;">コピーしました。XやLINEに貼り付けてください。</div>
       </div>
     </div>
 
-    <div class="footer">© Po・TRO</div>
+    <div class="footer">© PO・TORO</div>
   </div>
 
 <script>
 const TYPES = [
-  { key: "A", label: "癒し系タイプ", desc: "ほっと一息。優しい時間を求めるご主人様。", maids: ["おと", "なぎ", "ゆの"] },
-  { key: "B", label: "元気っ子タイプ", desc: "わいわい楽しく！エネルギー補給したいご主人様。", maids: ["うな", "ミカ", "りあ"] },
-  { key: "C", label: "大人クールタイプ", desc: "落ち着きと安心感。しっとり過ごしたいご主人様。", maids: ["まりん", "まろ"] },
-  { key: "D", label: "不思議幻想タイプ", desc: "個性的で幻想的な世界観に浸りたいご主人様。", maids: ["卯月", "るな", "れい"] },
-  { key: "E", label: "甘えんぼタイプ", desc: "可愛い要素に全振り！とことん癒されたいご主人様。", maids: ["海月", "ねね"] },
-  { key: "F", label: "お姉さん包容タイプ", desc: "包み込む安心感。頼れる先輩に甘えたいご主人様。", maids: ["べあ", "みお"] },
-  { key: "G", label: "オタク談義タイプ", desc: "推し活・趣味語りで盛り上がりたいご主人様。", maids: ["しぐれ", "ぷぷ", "ソフィア"] },
+  { key:"A", label:"ほっと一息ご主人様",
+    desc:"貴方はほっと一息ご主人様！ 自分を丁寧にいたわる知性と、周りの心まで落ち着かせる優しさを兼ね備えた、品ある存在です。静けさを選ぶ判断力に自信があり、その余裕が人からの尊重を自然と集めます。あなたの穏やかな空気感は「一緒にいるだけで整う」と評判で、小さな名場面の主役として名声も高まります。自分を大切にする選択ができる——その自尊心こそ最大の魅力。 貴方はポ・トロにとって安らぎを灯す大切な存在です！",
+    tagline:"安らぎを灯す大切な存在" },
+  { key:"B", label:"フルスロットルご主人様",
+    desc:"貴方はフルスロットルご主人様！ 場を晴れやかに変える明るさと瞬発力は、誰にも真似できない才能。楽しむことを選び抜く直感に自信があり、あなたのノリの良さは周囲からの尊重を引き寄せます。「あなたが来ると店が一段と輝く」と噂され、名声も自然と上昇中。自分の楽しさに責任を持てる前向きさが、健やかな自尊心を支えています。 貴方はポ・トロにとって盛り上がりの原動力となる存在です！",
+    tagline:"盛り上がりの原動力となる存在" },
+  { key:"C", label:"静かに嗜むご主人様",
+    desc:"貴方は静かに嗜むご主人様！ 品の良い間合いと確かな審美眼を持ち、静けさの中に価値を見出せる大人の余裕派。選び取る視点にぶれない自信があり、その所作と会話の質は周囲から深い尊重を受けます。控えめでも存在感は確かで、「通だ」と一目置かれる名声を築くタイプ。自分の基準を大切にできるからこそ、しなやかな自尊心が香ります。 貴方はポ・トロにとって上質さを支える品格ある存在です！",
+    tagline:"上質さを支える品格ある存在" },
+  { key:"D", label:"夢見心地ご主人様",
+    desc:"貴方は夢見心地ご主人様！ 日常をたちまち物語に変える想像力と、美しい余韻を作る感性の持ち主。独自の世界観を語る言葉に自信があり、その繊細な着眼点は「もっと聞きたい」と尊重を集めます。あなたのセンスは静かに口コミで広がり、“世界観の名手”としての名声も高まります。自分の好きに胸を張れる自尊心が、唯一無二の魅力を放ちます。 貴方はポ・トロにとって世界観を紡ぐ創造的な存在です！",
+    tagline:"世界観を紡ぐ創造的な存在" },
+  { key:"E", label:"きゅんきゅんご主人様",
+    desc:"貴方はきゅんきゅんご主人様！ 「可愛い」をまっすぐ楽しめる素直さは、周囲の心を柔らかくするギフト。欲しい気持ちを言語化できるあなたは自分へのケアに自信があり、その無邪気さは守りたくなる魅力として尊重されます。場を和ませる“ハッピー発生源”として名声も上々。自分の心を大切にできる健やかな自尊心が、キュンの中心に灯っています。 貴方はポ・トロにとって幸せを広げる愛らしい存在です！",
+    tagline:"幸せを広げる愛らしい存在" },
+  { key:"F", label:"相談ウェルカムご主人様",
+    desc:"貴方は相談ウェルカムご主人様！ 胸の内を言葉にできる誠実さと、相手を信じて頼れる強さを持つ、信頼のプロ。自分の感情を扱うリーダーシップに自信があり、その真摯さゆえに周囲から厚い尊重を受けます。人と人をやわらかくつなぐ影のキーマンとして名声も育つタイプ。自分を粗末にしない選択ができる——その健全な自尊心が、安心の輪を広げます。 貴方はポ・トロにとって安心を届ける頼れる存在です！",
+    tagline:"安心を届ける頼れる存在" },
+  { key:"G", label:"語り尽くしご主人様",
+    desc:"貴方は語り尽くしご主人様！ 推しへの深い理解と情熱を、知的に語れる“熱量のコンダクター”。積み重ねた知識に揺るぎない自信があり、解像度の高いトークは「学びがある」と尊重されます。おすすめや考察が評判になり、コミュニティでの名声も自然と上がるタイプ。自分の“好き”を誇れる堂々たる自尊心が、語りの中心で光ります。 貴方はポ・トロにとって知と情熱で場を高める核となる存在です！",
+    tagline:"知と情熱で場を高める核となる存在" },
 ];
 
 const QUESTIONS = [
-  {
-    q: "今日はどんな気分でポ・トロに来ましたか？",
-    a: [
-      { text: "ゆったり癒されたい", typeIndex: 0 },
-      { text: "元気をもらって盛り上がりたい！", typeIndex: 1 },
-      { text: "落ち着いた時間を静かに楽しみたい", typeIndex: 2 },
-      { text: "ちょっと不思議な世界に浸りたい", typeIndex: 3 },
-      { text: "可愛さに包まれてキュンとしたい", typeIndex: 4 },
-      { text: "優しいお姉さんに包まれたい", typeIndex: 5 },
-      { text: "趣味や推しの話を思いっきり語りたい！", typeIndex: 6 },
-    ]
-  },
-  {
-    q: "今飲みたいドリンクは？",
-    a: [
-      { text: "あたたかい紅茶やカフェオレでほっと一息", typeIndex: 0 },
-      { text: "しゅわしゅわ炭酸系でテンションUP！", typeIndex: 1 },
-      { text: "ノンアルコールカクテルで大人の雰囲気", typeIndex: 2 },
-      { text: "冷たいコーンポタージュを試し飲み", typeIndex: 3 },
-      { text: "ミルクやココアで可愛さ補給", typeIndex: 4 },
-      { text: "ビールやハイボールで居酒屋気分♪", typeIndex: 5 },
-      { text: "ブラックコーヒーでオタクトーク全開！", typeIndex: 6 },
-    ]
-  },
-  {
-    q: "かけられたい一言は？",
-    a: [
-      { text: "ご主人様、お疲れさまです💖 ゆっくりしていってくださいね", typeIndex: 0 },
-      { text: "やっほーっ！一緒に盛り上がっちゃいましょー！", typeIndex: 1 },
-      { text: "大丈夫。今日はわたしに任せて安心してね", typeIndex: 2 },
-      { text: "ふふっ、ご主人様だけに特別な秘密を教えちゃうかも…？", typeIndex: 3 },
-      { text: "えへへ〜、来てくれてとっても嬉しいのですっ", typeIndex: 4 },
-      { text: "困ったらいつでも頼ってね。しっかり支えてあげるから", typeIndex: 5 },
-      { text: "そのアニメ観ました！？語り合えるの嬉しすぎます〜！", typeIndex: 6 },
-    ]
-  },
-  {
-    q: "好きな雰囲気は？",
-    a: [
-      { text: "ご主人様を包み込む、ほわほわ癒し空間", typeIndex: 0 },
-      { text: "みんなで『萌え萌えきゅん♪』と盛り上がるにぎやか空間", typeIndex: 1 },
-      { text: "落ち着いたトーンで、お酒とお話をゆっくり楽しめる空間", typeIndex: 2 },
-      { text: "ランプの光や不思議なBGMに包まれる幻想的な空間", typeIndex: 3 },
-      { text: "かわいい声と仕草が飛び交う、きゅんきゅん萌え空間", typeIndex: 4 },
-      { text: "『おかえりなさい』に安心する、頼れるお姉さんが待つ空間", typeIndex: 5 },
-      { text: "メイドさんと一緒に推しやアニメの話で盛り上がるオタク空間", typeIndex: 6 },
-    ]
-  },
-  {
-    q: "一緒にしたいことは？",
-    a: [
-      { text: "のんびりお話して、心をぽかぽか癒してほしい", typeIndex: 0 },
-      { text: "チェキやゲームで、全力で盛り上がりたい！", typeIndex: 1 },
-      { text: "おしゃれにドリンクを傾けながら、大人な会話を楽しみたい", typeIndex: 2 },
-      { text: "非日常な世界観にひたって、不思議体験を味わいたい", typeIndex: 3 },
-      { text: "メイドさんに甘やかされて、とことん可愛がられたい", typeIndex: 4 },
-      { text: "優しいお姉さんに相談したり、頼らせてもらいたい", typeIndex: 5 },
-      { text: "推し活トークやアニメ・ゲーム談義で盛り上がりたい", typeIndex: 6 },
-    ]
-  },
-  {
-    q: "推しポイントで選ぶなら？",
-    a: [
-      { text: "やさしい微笑みと癒しのオーラ", typeIndex: 0 },
-      { text: "場を明るくする元気とテンション", typeIndex: 1 },
-      { text: "落ち着きと大人の余裕", typeIndex: 2 },
-      { text: "個性的でミステリアスな雰囲気", typeIndex: 3 },
-      { text: "あざと可愛い仕草とキュンとさせる魅力", typeIndex: 4 },
-      { text: "包み込んでくれる安心感と頼れる存在感", typeIndex: 5 },
-      { text: "推しや趣味を一緒に熱く語れるトーク力", typeIndex: 6 },
-    ]
-  },
-  {
-    q: "席に着いた最初のひと言は？",
-    a: [
-      { text: "ご主人様、今日はお疲れですね…ほっと一息つきましょうか💖", typeIndex: 0 },
-      { text: "ご主人様〜！今日は一緒に盛り上がっちゃいましょう！", typeIndex: 1 },
-      { text: "ご主人様、静かにゆったりと過ごしたいお気分ですか？", typeIndex: 2 },
-      { text: "ご主人様、不思議な世界に迷い込んだ気分じゃありませんか？", typeIndex: 3 },
-      { text: "ご主人様〜♡ もっともっとかまってくださいっ！", typeIndex: 4 },
-      { text: "ご主人様、今日あったこと…私にぜんぶお話していいんですよ", typeIndex: 5 },
-      { text: "ご主人様！あのアニメの最新話、もうチェックされましたか！？", typeIndex: 6 },
-    ]
-  },
-  {
-    q: "帰り際の理想は？",
-    a: [
-      { text: "すっかり癒されて、笑顔で帰りたい", typeIndex: 0 },
-      { text: "『楽しかったー！』と元気いっぱいで帰りたい", typeIndex: 1 },
-      { text: "落ち着いた気分で『また来たいな』と思いながら帰りたい", typeIndex: 2 },
-      { text: "不思議な余韻に浸りながら帰りたい", typeIndex: 3 },
-      { text: "胸いっぱいに『可愛い！』を抱えて帰りたい", typeIndex: 4 },
-      { text: "『やっぱり頼れるなぁ』と安心しながら帰りたい", typeIndex: 5 },
-      { text: "推しや趣味の話を語り尽くして満足して帰りたい", typeIndex: 6 },
-    ]
-  },
-  {
-    q: "何代目のメイド服が好き？",
-    a: [
-      { text: "やっぱり伝統の初代が一番好き！", typeIndex: 0 },
-      { text: "大人っぽい雰囲気の弐代目が好き", typeIndex: 2 },
-      { text: "キュートさ全開の参代目が好き", typeIndex: 4 },
-      { text: "幻想的な雰囲気の四代目が好き", typeIndex: 3 },
-      { text: "元気いっぱいの五代目が好き", typeIndex: 1 },
-      { text: "包容力を感じる六代目が好き", typeIndex: 5 },
-      { text: "推し活トークが似合う七代目が好き", typeIndex: 6 },
-    ]
-  },
+  { q:"ポ・トロにご帰宅する目的は？",
+    a:[
+      { text:"ゆったり癒されたい", typeIndex:0 },
+      { text:"思いっきり盛り上がりたい！", typeIndex:1 },
+      { text:"静かに大人っぽく過ごしたい", typeIndex:2 },
+      { text:"非日常の世界に浸りたい", typeIndex:3 },
+      { text:"可愛さで心を満たしたい", typeIndex:4 },
+      { text:"ちょっと話を聞いてほしい", typeIndex:5 },
+      { text:"推しや趣味を語りたい！", typeIndex:6 },
+    ]},
+  { q:"お出迎えの際にかけられたい一言は？",
+    a:[
+      { text:"ご主人様、お疲れ様です。ゆっくりしていってくださいね", typeIndex:0 },
+      { text:"やっほーっ！一緒に盛り上がっちゃいましょー！", typeIndex:1 },
+      { text:"大丈夫。今日は私に任せて安心してね", typeIndex:5 },
+      { text:"ふふっ、ご主人様だけに特別な秘密を教えちゃうかも…？", typeIndex:3 },
+      { text:"えへへ〜、来てくれてとっても嬉しいのですっ", typeIndex:4 },
+      { text:"困ったらいつでも相談してね。しっかり支えてあげるから", typeIndex:5 },
+      { text:"あのアニメ見ました！語り合えるの嬉しすぎます〜！", typeIndex:6 },
+    ]},
+  { q:"会話の雰囲気の理想は？",
+    a:[
+      { text:"穏やかに、優しい声で", typeIndex:0 },
+      { text:"賑やかに、元気な声で", typeIndex:1 },
+      { text:"落ち着いて、トーン低めで", typeIndex:2 },
+      { text:"ささやき気味で、雰囲気重視", typeIndex:3 },
+      { text:"リアクション可愛めでキュン多め", typeIndex:4 },
+      { text:"ゆったり寄り添って丁寧に", typeIndex:5 },
+      { text:"テンポ可変、深堀りしやすく", typeIndex:6 },
+    ]},
+  { q:"好きな雰囲気は？",
+    a:[
+      { text:"ご主人様を包み込む、ほわほわ癒し空間", typeIndex:0 },
+      { text:"みんなで『萌え萌えきゅん♪』と盛り上がるにぎやか空間", typeIndex:1 },
+      { text:"落ち着いたトーンで、お酒とお話をゆっくり楽しめる空間", typeIndex:2 },
+      { text:"ランプの光や不思議なBGMに包まれる幻想的な空間", typeIndex:3 },
+      { text:"かわいい声と仕草が飛び交う、きゅんきゅん萌え空間", typeIndex:4 },
+      { text:"『おかえりなさい』に安心する、頼れるメイドさんが待つ空間", typeIndex:5 },
+      { text:"メイドさんと一緒に推しやアニメの話で盛り上がるオタク空間", typeIndex:6 },
+    ]},
+  { q:"ポ・トロでよく飲むドリンクは？",
+    a:[
+      { text:"あたたかい紅茶やカフェオレ", typeIndex:0 },
+      { text:"フルーツジュース", typeIndex:1 },
+      { text:"ノンアルコールカクテル", typeIndex:2 },
+      { text:"冷たいコーンポタージュ", typeIndex:3 },
+      { text:"ミルクやココア", typeIndex:4 },
+      { text:"ビールやハイボール", typeIndex:5 },
+      { text:"ブラックコーヒー", typeIndex:6 },
+    ]},
+  { q:"メイドさんと一緒にしたいことは？",
+    a:[
+      { text:"のんびりお話して、心をぽかぽか癒してほしい", typeIndex:0 },
+      { text:"チェキやゲームで、全力で盛り上がりたい！", typeIndex:1 },
+      { text:"おしゃれにドリンクを傾けながら、大人な会話を楽しみたい", typeIndex:2 },
+      { text:"非日常な世界観に二人でどっぷり浸りたい", typeIndex:3 },
+      { text:"メイドさんに甘やかされて、とことん可愛がられたい", typeIndex:4 },
+      { text:"メイドさんに相談されたり、頼ってもらいたい", typeIndex:5 },
+      { text:"推し活トークやアニメ・ゲーム談義で盛り上がりたい", typeIndex:6 },
+    ]},
+  { q:"お見送りの際の理想は？",
+    a:[
+      { text:"すっかり癒されて、笑顔で帰りたい", typeIndex:0 },
+      { text:"『楽しかったー！』と元気いっぱいで帰りたい", typeIndex:1 },
+      { text:"落ち着いた気分で『また来たいな』と思いながら帰りたい", typeIndex:2 },
+      { text:"不思議な余韻に浸りながら帰りたい", typeIndex:3 },
+      { text:"胸いっぱいに『可愛い！』を抱えて帰りたい", typeIndex:4 },
+      { text:"『やっぱり頼れるなぁ』と安心しながら帰りたい", typeIndex:5 },
+      { text:"推しや趣味の話を語り尽くして満足して帰りたい", typeIndex:6 },
+    ]},
+  { q:"推し選ぶ基準は？",
+    a:[
+      { text:"やさしい微笑みと癒しのオーラ", typeIndex:0 },
+      { text:"場を明るくする元気とテンション", typeIndex:1 },
+      { text:"落ち着きと大人の余裕", typeIndex:2 },
+      { text:"個性的でミステリアスな雰囲気", typeIndex:3 },
+      { text:"あざと可愛い仕草とキュンとさせる魅力", typeIndex:4 },
+      { text:"包み込んでくれる安心感と頼れる存在感", typeIndex:5 },
+      { text:"推しや趣味を一緒に熱く語れるトーク力", typeIndex:6 },
+    ]},
+  { q:"何代目のメイド服が好き？",
+    a:[
+      { text:"やっぱり伝統の初代が好き", typeIndex:0 },
+      { text:"大人っぽい雰囲気の弐代目が好き", typeIndex:2 },
+      { text:"キュートさ全開の参代目が好き", typeIndex:4 },
+      { text:"幻想的な雰囲気の四代目が好き", typeIndex:3 },
+      { text:"元気いっぱいの五代目が好き", typeIndex:1 },
+      { text:"包容力を感じる六代目が好き", typeIndex:5 },
+      { text:"推し活トークが似合う七代目が好き", typeIndex:6 },
+    ]},
 ];
 
-const elQuiz = document.getElementById("quiz");
-const elResult = document.getElementById("resultCard");
-const elTitle = document.getElementById("resultTitle");
-const elRec = document.getElementById("resultRecommend");
-const elDesc = document.getElementById("resultDesc");
-const elSecond = document.getElementById("secondBest");
+function buildShareText(type){
+  const url = location.href.split('#')[0];
+  return `#ポトロ診断 の結果：私は「${type.label}」！\n` +
+         `— ポ・トロにとって${type.tagline} —\n` +
+         `診断はこちら▶ ${url}`;
+}
 
-function renderQuiz() {
-  elQuiz.innerHTML = "";
-  QUESTIONS.forEach((q, idx) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    const qEl = document.createElement("div");
-    qEl.className = "q";
-    qEl.textContent = `Q${idx+1}. ${q.q}`;
+const elQuiz=document.getElementById("quiz");
+const elResult=document.getElementById("resultCard");
+const elTitle=document.getElementById("resultTitle");
+const elDesc=document.getElementById("resultDesc");
+const btnX=document.getElementById("btnShareX");
+const btnCopy=document.getElementById("btnCopy");
+const copyHint=document.getElementById("copyHint");
+
+function renderQuiz(){
+  elQuiz.innerHTML="";
+  QUESTIONS.forEach((q,idx)=>{
+    const card=document.createElement("div");
+    card.className="card";
+    const qEl=document.createElement("div");
+    qEl.className="q";
+    qEl.textContent=`Q${idx+1}. ${q.q}`;
     card.appendChild(qEl);
 
-    const opts = document.createElement("div");
-    opts.className = "opts";
-    q.a.forEach((opt) => {
-      const btn = document.createElement("div");
-      btn.className = "opt";
-      btn.textContent = opt.text;
-      btn.setAttribute("role", "button");
-      btn.setAttribute("tabindex", "0");
-      btn.onclick = () => {
-        opts.querySelectorAll(".opt").forEach(o => o.classList.remove("selected"));
+    const opts=document.createElement("div");
+    opts.className="opts";
+    q.a.forEach(opt=>{
+      const btn=document.createElement("div");
+      btn.className="opt";
+      btn.textContent=opt.text;
+      btn.setAttribute("role","button");
+      btn.setAttribute("tabindex","0");
+      btn.onclick=()=>{
+        opts.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));
         btn.classList.add("selected");
-        card.dataset.answer = String(opt.typeIndex);
+        card.dataset.answer=String(opt.typeIndex);
       };
-      btn.onkeydown = (e) => { if (e.key === "Enter") btn.click(); };
+      btn.onkeydown=e=>{ if(e.key==='Enter') btn.click(); };
       opts.appendChild(btn);
     });
     card.appendChild(opts);
@@ -240,49 +286,63 @@ function renderQuiz() {
   });
 }
 
-function computeResult() {
-  const cards = Array.from(elQuiz.querySelectorAll(".card"));
-  const counts = Array(TYPES.length).fill(0);
-  for (const c of cards) {
-    if (!("answer" in c.dataset)) {
-      return { error: "未回答の設問があります。" };
-    }
-    const t = Number(c.dataset.answer);
-    if (!Number.isFinite(t) || t < 0 || t >= TYPES.length) continue;
-    counts[t]++;
+function computeResult(){
+  const cards=Array.from(elQuiz.querySelectorAll('.card'));
+  const counts=Array(TYPES.length).fill(0);
+  for(const c of cards){
+    if(!('answer' in c.dataset)) return {error:'未回答の設問があります。'};
+    const t=Number(c.dataset.answer);
+    if(Number.isFinite(t) && t>=0 && t<TYPES.length) counts[t]++;
   }
-  let max = -1, maxIdx = -1;
-  counts.forEach((v,i)=>{ if (v > max) { max = v; maxIdx = i; } });
-  const secondScores = counts.map((v,i)=>({v,i})).filter(x=>x.i!==maxIdx).sort((a,b)=>b.v-a.v);
-  const secondBest = secondScores.length ? secondScores[0] : null;
-  return { maxIdx, counts, secondBest };
+  let max=-1, idx=-1;
+  counts.forEach((v,i)=>{ if(v>max){ max=v; idx=i; } });
+  return { idx, counts };
 }
 
-function showResult() {
-  const r = computeResult();
-  if (r.error) { alert(r.error); return; }
-  const t = TYPES[r.maxIdx];
-  elTitle.textContent = `ご主人様は『${t.label}』！`;
-  elRec.innerHTML = `今日のお給仕は <span class="pill">${t.maids.join("・")}</span> メイドがオススメです💖`;
-  elDesc.textContent = t.desc;
-  if (r.secondBest && r.secondBest.v > 0) {
-    const s = TYPES[r.secondBest.i];
-    elSecond.style.display = "block";
-    elSecond.textContent = `次点：『${s.label}』（おすすめ：${s.maids.join("・")}）`;
-  } else {
-    elSecond.style.display = "none";
-  }
-  elResult.style.display = "block";
-  window.scrollTo({ top: elResult.offsetTop - 12, behavior: "smooth" });
+let lastType=null;
+function showResult(){
+  const r=computeResult();
+  if(r.error){ alert(r.error); return; }
+  const t=TYPES[r.idx];
+  lastType=t;
+  elTitle.textContent=`貴方は『${t.label}』！`;
+  elDesc.textContent=t.desc;
+  elResult.style.display='block';
+  window.scrollTo({ top: elResult.offsetTop - 12, behavior:'smooth' });
 }
 
-function resetQuiz() {
+function resetQuiz(){
   renderQuiz();
-  elResult.style.display = "none";
+  elResult.style.display='none';
+  lastType=null;
 }
 
-document.getElementById("btnSubmit").addEventListener("click", showResult);
-document.getElementById("btnReset").addEventListener("click", resetQuiz);
+btnCopy.addEventListener('click', async ()=>{
+  if(!lastType){ alert('先に結果をご覧ください。'); return; }
+  const text=buildShareText(lastType);
+  try{
+    await navigator.clipboard.writeText(text);
+    copyHint.style.display='block';
+    setTimeout(()=>copyHint.style.display='none',1600);
+  }catch(e){
+    const ta=document.createElement('textarea');
+    ta.value=text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); ta.remove();
+    copyHint.style.display='block';
+    setTimeout(()=>copyHint.style.display='none',1600);
+  }
+});
+
+btnX.addEventListener('click', ()=>{
+  if(!lastType){ alert('先に結果をご覧ください。'); return; }
+  const text=encodeURIComponent(buildShareText(lastType));
+  const intent=`https://twitter.com/intent/tweet?text=${text}`;
+  window.open(intent,'_blank');
+});
+
+document.addEventListener('DOMContentLoaded', renderQuiz);
+document.getElementById('btnSubmit').addEventListener('click', showResult);
+document.getElementById('btnReset').addEventListener('click', resetQuiz);
 renderQuiz();
 </script>
 </body>
