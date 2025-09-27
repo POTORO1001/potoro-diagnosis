@@ -6,30 +6,17 @@
 <title>ご主人様タイプ診断｜ポ・トロ（レースver.）</title>
 <meta name="description" content="貴方はどんなご主人様？7タイプ診断で“あなた像”を楽しくチェック。最後は決め台詞つき！" />
 <style>
-  :root{
-    --bg:#fff8fc;
-    --card:#ffffff;
-    --ink:#2a2a2a;
-    --accent:#ff68b7;
-    --accent-2:#ffc2e1;
-    --muted:#7a7a7a;
-  }
+  :root{ --bg:#fff8fc; --card:#ffffff; --ink:#2a2a2a; --accent:#ff68b7; --muted:#7a7a7a; }
   html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo","Helvetica Neue",Arial,sans-serif;}
   body{
     background-image:
       radial-gradient(rgba(255,168,214,.25) 1px, transparent 1px),
       radial-gradient(rgba(255,168,214,.18) 1px, transparent 1px);
-    background-size: 16px 16px, 24px 24px;
-    background-position: 0 0, 8px 8px;
+    background-size: 16px 16px, 24px 24px; background-position: 0 0, 8px 8px;
   }
   .container{max-width:940px;margin:26px auto;padding:16px}
-  .card{
-    position:relative;
-    background:var(--card);
-    border-radius:18px;
-    padding:20px;
-    margin-bottom:18px;
+  .card{position:relative;background:var(--card);border-radius:18px;padding:20px;margin-bottom:18px;
     box-shadow:0 10px 28px rgba(255,104,183,.18), 0 6px 16px rgba(0,0,0,.06);
     border:12px solid transparent;
     border-image-source:url("data:image/svg+xml;utf8,\
@@ -43,51 +30,32 @@
 </defs>\
 <rect x='0' y='0' width='60' height='60' fill='url(%23p)'/>\
 </svg>");
-    border-image-slice: 30;
-    border-image-repeat: round;
-  }
+    border-image-slice: 30;border-image-repeat: round;}
   h1{font-size:1.8rem;margin:0 0 10px;font-weight:900;letter-spacing:.5px;}
   p.lead{color:var(--muted);margin:2px 0 0}
-  .ribbon{
-    display:inline-block;
-    background:linear-gradient(180deg,var(--accent),#ff4ea9);
-    color:#fff;font-weight:900;padding:10px 16px;border-radius:10px;
-    position:relative; margin:2px 0 10px;
-    box-shadow:0 8px 16px rgba(255,104,183,.35);
-  }
-  .ribbon:before,.ribbon:after{
-    content:""; position:absolute; top:100%; width:0; height:0; border:8px solid transparent;
-  }
-  .ribbon:before{left:10px; border-top-color:#d43d8f;}
-  .ribbon:after{right:10px; border-top-color:#d43d8f;}
-  .q{margin:16px 0 12px;font-weight:800;}
-  .opts{display:grid;grid-template-columns:1fr;gap:9px}
-  .opt{
-    border:1.8px solid #f7d9eb;border-radius:12px;padding:12px 14px;background:#fff;cursor:pointer;user-select:none;
-    transition:transform .06s ease,border-color .2s ease,background .2s ease;
-    position:relative;
-  }
-  .opt:before{
-    content:"❤"; position:absolute; left:10px; top:50%; transform:translateY(-50%);
-    opacity:.0; font-size:12px; color:#ff76bd; transition:opacity .15s ease;
-  }
-  .opt:hover{transform:translateY(-1px)}
-  .opt.selected{border-color:var(--accent); background:#fff2f8;}
-  .opt.selected:before{opacity:.9}
-  .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-  button{
-    appearance:none;border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;
-    background:var(--accent);color:#fff;box-shadow:0 6px 20px rgba(255,104,183,.35);
-  }
-  button.secondary{background:#f3f3f3;color:#333;box-shadow:none}
-  button.ghost{background:transparent;border:2px dashed var(--accent);color:var(--accent)}
-  .result{border:2px dashed #ffd3ea;border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff, #fff6fb)}
-  .small{color:var(--muted);font-size:.95rem}
-  .share{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  .share button{display:inline-flex;align-items:center;gap:8px}
-  .share .x{background:#000} .share .x span{font-weight:800}
-  .footer{text-align:center;color:var(--muted);font-size:.86rem;margin-top:14px}
+  .ribbon{display:inline-block;background:linear-gradient(180deg,var(--accent),#ff4ea9);color:#fff;font-weight:900;padding:10px 16px;border-radius:10px;
+    position:relative; margin:2px 0 10px;box-shadow:0 8px 16px rgba(255,104,183,.35);}
+  .ribbon:before,.ribbon:after{content:''; position:absolute; top:100%; width:0; height:0; border:8px solid transparent;}
+  .ribbon:before{left:10px; border-top-color:#d43d8f;} .ribbon:after{right:10px; border-top-color:#d43d8f;}
+  .q{margin:16px 0 12px;font-weight:800;} .opts{display:grid;grid-template-columns:1fr;gap:9px}
+  .opt{border:1.8px solid #f7d9eb;border-radius:12px;padding:12px 14px;background:#fff;cursor:pointer;user-select:none;
+    transition:transform .06s ease,border-color .2s ease,background .2s ease;position:relative;}
+  .opt:before{content:'❤'; position:absolute; left:10px; top:50%; transform:translateY(-50%);
+    opacity:.0; font-size:12px; color:#ff76bd; transition:opacity .15s ease;}
+  .opt:hover{transform:translateY(-1px)} .opt.selected{border-color:var(--accent); background:#fff2f8;}
+  .opt.selected:before{opacity:.9} .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+  button{appearance:none;border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;background:var(--accent);color:#fff;box-shadow:0 6px 20px rgba(255,104,183,.35);}
+  button.secondary{background:#f3f3f3;color:#333;box-shadow:none} button.ghost{background:transparent;border:2px dashed var(--accent);color:var(--accent)}
+  .result{border:2px dashed #ffd3ea;border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff, #fff6fb)} .small{color:var(--muted);font-size:.95rem}
+  .share{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px} .share button{display:inline-flex;align-items:center;gap:8px}
+  .share .x{background:#000} .share .x span{font-weight:800} .footer{text-align:center;color:var(--muted);font-size:.86rem;margin-top:14px}
   @media (min-width:760px){ .opts{grid-template-columns:1fr 1fr} }
+  .illustWrap{display:flex;justify-content:center;margin:6px 0 12px;}
+  .illust{width:100%;max-width:520px;aspect-ratio:1/1;overflow:hidden;border-radius:18px;background:#fff;border:8px solid #ffd7ec;
+    box-shadow:0 6px 18px rgba(255,104,183,.15);display:flex;align-items:center;justify-content:center;position:relative;}
+  .illust img{width:100%;height:100%;object-fit:cover;display:block}
+  .ph{background:linear-gradient(135deg,#fff0f7,#ffe6f2);color:#c45a96;font-weight:900;letter-spacing:.5px;font-size:1.1rem;}
+  .ph::after{content:'ILLUSTRATION'; position:absolute; bottom:10px; right:12px; font-size:.72rem; color:#d08ab2; opacity:.7;}
 </style>
 </head>
 <body>
@@ -97,18 +65,19 @@
       <h1>ご主人様タイプ診断</h1>
       <p class="lead">「貴方はどんなご主人様？」がわかる自己診断。</p>
     </div>
-
     <div id="quiz"></div>
-
-    <div class="card">
-      <div class="controls">
-        <button id="btnSubmit">結果を見る</button>
-        <button class="secondary" id="btnReset">やり直す</button>
-      </div>
-    </div>
-
+    <div class="card"><div class="controls">
+      <button id="btnSubmit">結果を見る</button>
+      <button class="secondary" id="btnReset">やり直す</button>
+    </div></div>
     <div id="resultCard" class="card" style="display:none;">
       <div class="result">
+        <div class="illustWrap">
+          <figure class="illust" aria-label="結果イラスト">
+            <img id="illustImg" alt="タイプに合わせたイラスト" loading="lazy" decoding="async" style="display:none;" />
+            <div class="illust ph" id="illustPh">タイプに合わせたイラストが入ります</div>
+          </figure>
+        </div>
         <div id="resultTitle" style="font-size:1.2rem;font-weight:900;margin-bottom:6px;"></div>
         <div id="resultDesc" class="small" style="line-height:1.9;"></div>
         <div class="share">
@@ -118,11 +87,18 @@
         <div id="copyHint" class="small" style="display:none;">コピーしました。XやLINEに貼り付けてください。</div>
       </div>
     </div>
-
     <div class="footer">© PO・TORO</div>
   </div>
-
 <script>
+const ILLUSTRATIONS = {
+  "A": "",
+  "B": "",
+  "C": "",
+  "D": "",
+  "E": "",
+  "F": "img/type_F_support.png",
+  "G": "img/type_G_otaku.png",
+};
 const TYPES = [
   { key:"A", label:"ほっと一息ご主人様",
     desc:"貴方はほっと一息ご主人様！ 自分を丁寧にいたわる知性と、周りの心まで落ち着かせる優しさを兼ね備えた、品ある存在です。静けさを選ぶ判断力に自信があり、その余裕が人からの尊重を自然と集めます。あなたの穏やかな空気感は「一緒にいるだけで整う」と評判で、小さな名場面の主役として名声も高まります。自分を大切にする選択ができる——その自尊心こそ最大の魅力。 貴方はポ・トロにとって安らぎを灯す大切な存在です！",
@@ -146,7 +122,6 @@ const TYPES = [
     desc:"貴方は語り尽くしご主人様！ 推しへの深い理解と情熱を、知的に語れる“熱量のコンダクター”。積み重ねた知識に揺るぎない自信があり、解像度の高いトークは「学びがある」と尊重されます。おすすめや考察が評判になり、コミュニティでの名声も自然と上がるタイプ。自分の“好き”を誇れる堂々たる自尊心が、語りの中心で光ります。 貴方はポ・トロにとって知と情熱で場を高める核となる存在です！",
     tagline:"知と情熱で場を高める核となる存在" },
 ];
-
 const QUESTIONS = [
   { q:"ポ・トロにご帰宅する目的は？",
     a:[
@@ -239,14 +214,8 @@ const QUESTIONS = [
       { text:"推し活トークが似合う七代目が好き", typeIndex:6 },
     ]},
 ];
-
-function buildShareText(type){
-  const url = location.href.split('#')[0];
-  return `#ポトロ診断 の結果：私は「${type.label}」！\n` +
-         `— ポ・トロにとって${type.tagline} —\n` +
-         `診断はこちら▶ ${url}`;
-}
-
+function buildShareText(type){ const url = location.href.split('#')[0];
+  return `#ポトロ診断 の結果：私は「${type.label}」！\n— ポ・トロにとって${type.tagline} —\n診断はこちら▶ ${url}`;}
 const elQuiz=document.getElementById("quiz");
 const elResult=document.getElementById("resultCard");
 const elTitle=document.getElementById("resultTitle");
@@ -254,96 +223,64 @@ const elDesc=document.getElementById("resultDesc");
 const btnX=document.getElementById("btnShareX");
 const btnCopy=document.getElementById("btnCopy");
 const copyHint=document.getElementById("copyHint");
-
+const illustImg=document.getElementById("illustImg");
+const illustPh=document.getElementById("illustPh");
 function renderQuiz(){
   elQuiz.innerHTML="";
   QUESTIONS.forEach((q,idx)=>{
-    const card=document.createElement("div");
-    card.className="card";
-    const qEl=document.createElement("div");
-    qEl.className="q";
-    qEl.textContent=`Q${idx+1}. ${q.q}`;
-    card.appendChild(qEl);
-
-    const opts=document.createElement("div");
-    opts.className="opts";
+    const card=document.createElement("div"); card.className="card";
+    const qEl=document.createElement("div"); qEl.className="q"; qEl.textContent=`Q${idx+1}. ${q.q}`; card.appendChild(qEl);
+    const opts=document.createElement("div"); opts.className="opts";
     q.a.forEach(opt=>{
-      const btn=document.createElement("div");
-      btn.className="opt";
-      btn.textContent=opt.text;
-      btn.setAttribute("role","button");
-      btn.setAttribute("tabindex","0");
-      btn.onclick=()=>{
-        opts.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));
-        btn.classList.add("selected");
-        card.dataset.answer=String(opt.typeIndex);
-      };
+      const btn=document.createElement("div"); btn.className="opt"; btn.textContent=opt.text;
+      btn.setAttribute("role","button"); btn.setAttribute("tabindex","0");
+      btn.onclick=()=>{ opts.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));
+        btn.classList.add("selected"); card.dataset.answer=String(opt.typeIndex); };
       btn.onkeydown=e=>{ if(e.key==='Enter') btn.click(); };
       opts.appendChild(btn);
     });
-    card.appendChild(opts);
-    elQuiz.appendChild(card);
+    card.appendChild(opts); elQuiz.appendChild(card);
   });
 }
-
 function computeResult(){
-  const cards=Array.from(elQuiz.querySelectorAll('.card'));
+  const cards=Array.from(elQuiz.querySelectorAll(".card"));
   const counts=Array(TYPES.length).fill(0);
   for(const c of cards){
-    if(!('answer' in c.dataset)) return {error:'未回答の設問があります。'};
+    if(!("answer" in c.dataset)) return {error:"未回答の設問があります。"};
     const t=Number(c.dataset.answer);
     if(Number.isFinite(t) && t>=0 && t<TYPES.length) counts[t]++;
   }
-  let max=-1, idx=-1;
-  counts.forEach((v,i)=>{ if(v>max){ max=v; idx=i; } });
+  let max=-1, idx=-1; counts.forEach((v,i)=>{ if(v>max){ max=v; idx=i; } });
   return { idx, counts };
 }
-
 let lastType=null;
 function showResult(){
   const r=computeResult();
   if(r.error){ alert(r.error); return; }
-  const t=TYPES[r.idx];
-  lastType=t;
-  elTitle.textContent=`貴方は『${t.label}』！`;
-  elDesc.textContent=t.desc;
-  elResult.style.display='block';
-  window.scrollTo({ top: elResult.offsetTop - 12, behavior:'smooth' });
+  const t=TYPES[r.idx]; lastType=t;
+  const url = (ILLUSTRATIONS && ILLUSTRATIONS[t.key]) ? ILLUSTRATIONS[t.key] : "";
+  if(url){ illustImg.src=url; illustImg.style.display="block"; illustPh.style.display="none";
+    illustImg.onerror=()=>{ illustImg.style.display="none"; illustPh.style.display="flex"; }; }
+  else { illustImg.style.display="none"; illustPh.style.display="flex"; }
+  elTitle.textContent=`貴方は『${t.label}』！`; elDesc.textContent=t.desc;
+  elResult.style.display="block"; window.scrollTo({ top: elResult.offsetTop - 12, behavior:"smooth"});
 }
-
-function resetQuiz(){
-  renderQuiz();
-  elResult.style.display='none';
-  lastType=null;
-}
-
-btnCopy.addEventListener('click', async ()=>{
-  if(!lastType){ alert('先に結果をご覧ください。'); return; }
+function resetQuiz(){ renderQuiz(); elResult.style.display="none"; lastType=null; }
+btnCopy.addEventListener("click", async ()=>{
+  if(!lastType){ alert("先に結果をご覧ください。"); return; }
   const text=buildShareText(lastType);
-  try{
-    await navigator.clipboard.writeText(text);
-    copyHint.style.display='block';
-    setTimeout(()=>copyHint.style.display='none',1600);
-  }catch(e){
-    const ta=document.createElement('textarea');
-    ta.value=text; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy'); ta.remove();
-    copyHint.style.display='block';
-    setTimeout(()=>copyHint.style.display='none',1600);
-  }
+  try{ await navigator.clipboard.writeText(text); copyHint.style.display="block"; setTimeout(()=>copyHint.style.display="none",1600); }
+  catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    copyHint.style.display='block'; setTimeout(()=>copyHint.style.display='none',1600); }
 });
-
-btnX.addEventListener('click', ()=>{
-  if(!lastType){ alert('先に結果をご覧ください。'); return; }
+btnX.addEventListener("click", ()=>{
+  if(!lastType){ alert("先に結果をご覧ください。"); return; }
   const text=encodeURIComponent(buildShareText(lastType));
-  const intent=`https://twitter.com/intent/tweet?text=${text}`;
-  window.open(intent,'_blank');
+  window.open(`https://twitter.com/intent/tweet?text=${text}`,'_blank');
 });
-
-document.addEventListener('DOMContentLoaded', renderQuiz);
-document.getElementById('btnSubmit').addEventListener('click', showResult);
-document.getElementById('btnReset').addEventListener('click', resetQuiz);
+document.addEventListener("DOMContentLoaded", renderQuiz);
+document.getElementById("btnSubmit").addEventListener("click", showResult);
+document.getElementById("btnReset").addEventListener("click", resetQuiz);
 renderQuiz();
 </script>
-</body>
-</html>
+</body></html>
