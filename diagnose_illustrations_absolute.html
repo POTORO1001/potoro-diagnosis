@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>画像チェック（絶対パス）</title>
+<style>
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;background:#fff8fc;margin:0;color:#222}
+.wrap{max-width:980px;margin:24px auto;padding:16px}
+table{border-collapse:collapse;width:100%;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+th,td{border:1px solid #f0cfe3;padding:10px;font-size:.95rem} th{background:#ffe6f3;text-align:left}
+.ok{color:#0a8f3a;font-weight:800}.ng{color:#c21d5a;font-weight:800}
+img{width:120px;height:120px;object-fit:cover;border-radius:8px;border:4px solid #ffe0ef;background:#fff0f6}
+</style></head>
+<body>
+<div class="wrap">
+  <h1>タイプ別イラスト存在チェック（/potro-quiz/img/）</h1>
+  <p>リポジトリ名が違う場合は、ソース内の <code>BASE</code> を編集してください。</p>
+  <table><thead><tr><th>タイプ</th><th>URL</th><th>状態</th><th>プレビュー</th></tr></thead><tbody id="tb"></tbody></table>
+</div>
+<script>
+const BASE="/potro-quiz/img/"; // ←リポジトリ名に合わせて変更
+const files={A:"type_A_relax.png",B:"type_B_genki.png",C:"type_C_cool.png",D:"type_D_mystic.png",E:"type_E_cute.png",F:"type_F_support.png",G:"type_G_otaku.png"};
+const tb=document.getElementById('tb');
+(async function(){
+  for(const [k,f] of Object.entries(files)){
+    const url=BASE+f+"?v="+Date.now();
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${k}</td><td><code>${url}</code></td><td>…</td><td></td>`;
+    tb.appendChild(tr);
+    const img=new Image();
+    img.onload=()=>{ tr.children[2].innerHTML='<span class="ok">OK</span>'; tr.children[3].appendChild(img); };
+    img.onerror=()=>{ tr.children[2].innerHTML='<span class="ng">NG</span>'; };
+    img.src=url;
+  }
+})();
+</script>
+</body>
+</html>
