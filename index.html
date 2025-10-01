@@ -61,30 +61,7 @@
   <div class="footer">© PO・TORO</div>
 </div>
 
-<script>
-// GitHub Pages のベース（repo名が potro-quiz の場合）
-const BASE = "/potro-quiz/img/";
 
-const ILLUSTRATIONS = {
-  "A": BASE + "type_A_relax.png",
-  "B": BASE + "type_B_genki.png",
-  "C": BASE + "type_C_cool.png",
-  "D": BASE + "type_D_mystic.png",
-  "E": BASE + "type_E_cute.png",
-  "F": BASE + "type_F_support.png",
-  "G": BASE + "type_G_otaku.png",
-};
-
-// ↓ 画像読み込みエラーが出たら、どのURLを読みに行ったか表示（デバッグ用）
-const img = document.getElementById("illustImg");
-const ph  = document.getElementById("illustPh");
-const err = document.getElementById("imgErr"); // なければ <div id="imgErr"></div> を結果カード内に追加
-function showIllust(url){
-  img.style.display="none"; ph.style.display="flex"; err.textContent="";
-  img.onload = ()=>{ ph.style.display="none"; img.style.display="block"; };
-  img.onerror = ()=>{ ph.style.display="flex"; err.textContent = "画像が見つかりません: " + url; };
-  img.src = url + "?v=" + Date.now(); // キャッシュ回避
-}
 </script>
 
 /* タイプ */
