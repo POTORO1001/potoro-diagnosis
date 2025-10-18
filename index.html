@@ -3,125 +3,158 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ご主人様タイプ診断｜ポ・トロ（レースver.）</title>
-<meta name="description" content="貴方はどんなご主人様？7タイプ診断で“あなた像”を楽しくチェック。最後は決め台詞つき！" />
+<title>ご主人様タイプ診断（MBTI要素入り・レースver.）｜PO・TORO Presents</title>
+<meta name="description" content="PO・TORO Presents『ご主人様タイプ診断（MBTI要素入り）』。9問＋MBTI風8問に答えるだけで、あなたのタイプとMBTI傾向を判定します。">
 <style>
-  :root{ --bg:#fff8fc; --card:#ffffff; --ink:#2a2a2a; --accent:#ff68b7; --muted:#7a7a7a; }
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo","Helvetica Neue",Arial,sans-serif;}
-  body{
+  :root{
+    --bg:#fff8fc; --ink:#2a2a2a; --muted:#786e75;
+    --accent:#ff68b7; --accent-2:#ff4ea9;
+    --card:#fff; --lace:#ffd3ea; --lace-2:#ffe6f3;
+  }
+  html,body{
+    margin:0; padding:0; color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo","Helvetica Neue",Arial,sans-serif;
+    background: var(--bg);
     background-image:
       radial-gradient(rgba(255,168,214,.25) 1px, transparent 1px),
       radial-gradient(rgba(255,168,214,.18) 1px, transparent 1px);
-    background-size: 16px 16px, 24px 24px; background-position: 0 0, 8px 8px;
+    background-size: 16px 16px, 24px 24px;
+    background-position: 0 0, 8px 8px;
   }
-  .container{max-width:940px;margin:26px auto;padding:16px}
-  .card{position:relative;background:var(--card);border-radius:18px;padding:20px;margin-bottom:18px;
-    box-shadow:0 10px 28px rgba(255,104,183,.18), 0 6px 16px rgba(0,0,0,.06);
-    border:12px solid transparent;
+  .container{max-width:960px;margin:28px auto;padding:16px}
+  /* Lace card */
+  .card{
+    position:relative;background:var(--card);border-radius:18px;padding:20px;margin-bottom:18px;
+    box-shadow:0 10px 28px rgba(255,104,183,.18),0 6px 16px rgba(0,0,0,.06);
+    border:14px solid transparent;
     border-image-source:url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'>\
+<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'>\
 <defs>\
-<pattern id='p' width='20' height='20' patternUnits='userSpaceOnUse'>\
-<circle cx='10' cy='10' r='9' fill='none' stroke='%23ffcbe7' stroke-width='1.6'/>\
-<circle cx='10' cy='10' r='6.5' fill='none' stroke='%23ffe3f3' stroke-width='1.2'/>\
-<circle cx='10' cy='10' r='3.5' fill='none' stroke='%23ffd8ee' stroke-width='1.2'/>\
+<pattern id='lace' width='32' height='32' patternUnits='userSpaceOnUse'>\
+<circle cx='16' cy='16' r='14' fill='none' stroke='%23ffd3ea' stroke-width='1.6'/>\
+<circle cx='16' cy='16' r='10.5' fill='none' stroke='%23ffe6f3' stroke-width='1.2'/>\
+<circle cx='16' cy='16' r='7' fill='none' stroke='%23ffdbea' stroke-width='1.2'/>\
 </pattern>\
 </defs>\
-<rect x='0' y='0' width='60' height='60' fill='url(%23p)'/>\
+<rect x='0' y='0' width='64' height='64' fill='url(%23lace)'/>\
 </svg>");
-    border-image-slice: 30;border-image-repeat: round;}
-  h1{font-size:1.8rem;margin:0 0 10px;font-weight:900;letter-spacing:.5px;}
-  p.lead{color:var(--muted);margin:2px 0 0}
-  .ribbon{display:inline-block;background:linear-gradient(180deg,var(--accent),#ff4ea9);color:#fff;font-weight:900;padding:10px 16px;border-radius:10px;
-    position:relative; margin:2px 0 10px;box-shadow:0 8px 16px rgba(255,104,183,.35);}
-  .ribbon:before,.ribbon:after{content:''; position:absolute; top:100%; width:0; height:0; border:8px solid transparent;}
-  .ribbon:before{left:10px; border-top-color:#d43d8f;} .ribbon:after{right:10px; border-top-color:#d43d8f;}
-  .q{margin:16px 0 12px;font-weight:800;} .opts{display:grid;grid-template-columns:1fr;gap:9px}
-  .opt{border:1.8px solid #f7d9eb;border-radius:12px;padding:12px 14px;background:#fff;cursor:pointer;user-select:none;
-    transition:transform .06s ease,border-color .2s ease,background .2s ease;position:relative;}
-  .opt:before{content:'❤'; position:absolute; left:10px; top:50%; transform:translateY(-50%);
-    opacity:.0; font-size:12px; color:#ff76bd; transition:opacity .15s ease;}
-  .opt:hover{transform:translateY(-1px)} .opt.selected{border-color:var(--accent); background:#fff2f8;}
-  .opt.selected:before{opacity:.9} .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-  button{appearance:none;border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;background:var(--accent);color:#fff;box-shadow:0 6px 20px rgba(255,104,183,.35);}
-  button.secondary{background:#f3f3f3;color:#333;box-shadow:none} button.ghost{background:transparent;border:2px dashed var(--accent);color:var(--accent)}
-  .result{border:2px dashed #ffd3ea;border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff, #fff6fb)} .small{color:var(--muted);font-size:.95rem}
-  .share{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px} .share button{display:inline-flex;align-items:center;gap:8px}
-  .share .x{background:#000} .share .x span{font-weight:800} .footer{text-align:center;color:var(--muted);font-size:.86rem;margin-top:14px}
+    border-image-slice: 32; border-image-repeat: round;
+  }
+  .ribbon{
+    display:inline-block; background:linear-gradient(180deg,var(--accent),var(--accent-2)); color:#fff;
+    font-weight:900; padding:10px 16px; border-radius:12px; box-shadow:0 8px 16px rgba(255,104,183,.35);
+  }
+  h1{font-size:1.85rem;margin:8px 0 6px;font-weight:900;letter-spacing:.5px}
+  .lead{color:var(--muted); margin:0}
+
+  .q{margin:16px 0 12px;font-weight:800}
+  .opts{display:grid;grid-template-columns:1fr;gap:9px}
   @media (min-width:760px){ .opts{grid-template-columns:1fr 1fr} }
-  .illustWrap{display:flex;justify-content:center;margin:6px 0 12px;}
-  .illust{width:100%;max-width:520px;aspect-ratio:1/1;overflow:hidden;border-radius:18px;background:#fff;border:8px solid #ffd7ec;
-    box-shadow:0 6px 18px rgba(255,104,183,.15);display:flex;align-items:center;justify-content:center;position:relative;}
+  .opt{
+    border:1.8px solid #f7d9eb; border-radius:12px; padding:12px 14px; background:#fff; cursor:pointer; user-select:none;
+    transition:transform .06s ease, border-color .2s ease, background .2s ease;
+  }
+  .opt:hover{ transform: translateY(-1px); }
+  .opt.selected{ border-color:var(--accent); background:#fff2f8; }
+
+  .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+  button{appearance:none;border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;background:var(--accent);color:#fff;box-shadow:0 6px 20px rgba(255,104,183,.35)}
+  button.secondary{background:#f3f3f3;color:#333;box-shadow:none}
+
+  .result{border:2px dashed var(--lace);border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff,#fff6fb)}
+  .illustWrap{display:flex;justify-content:center;margin:6px 0 12px}
+  .illust{width:100%;max-width:520px;aspect-ratio:1/1;overflow:hidden;border-radius:18px;background:#fff;border:8px solid #ffd7ec;display:flex;align-items:center;justify-content:center;position:relative}
   .illust img{width:100%;height:100%;object-fit:cover;display:block}
-  .ph{background:linear-gradient(135deg,#fff0f7,#ffe6f2);color:#c45a96;font-weight:900;letter-spacing:.5px;font-size:1.1rem;}
-  .ph::after{content:'ILLUSTRATION'; position:absolute; bottom:10px; right:12px; font-size:.72rem; color:#d08ab2; opacity:.7;}
+  .ph{background:linear-gradient(135deg,#fff0f7,#ffe6f2);color:#c45a96;font-weight:900;letter-spacing:.5px;font-size:1.05rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%}
+  .err{color:#c21d5a;font-weight:800;margin-top:6px}
+  .footer{text-align:center;color:#777;font-size:.9rem;margin-top:10px}
+  .muted{color:#777}
 </style>
 </head>
 <body>
   <div class="container">
     <div class="card">
       <span class="ribbon">PO・TORO Presents</span>
-      <h1>ご主人様タイプ診断</h1>
-      <p class="lead">「貴方はどんなご主人様？」がわかる自己診断。</p>
+      <h1>ご主人様タイプ診断（MBTI要素入り・レースver.）</h1>
+      <p class="lead">「貴方はどんなご主人様？」がわかる自己診断。9問＋MBTI風8問でタイプと傾向を判定します。</p>
     </div>
+
+    <!-- 9問ブロック（既存部分） -->
     <div id="quiz"></div>
-    <div class="card"><div class="controls">
-      <button id="btnSubmit">結果を見る</button>
-      <button class="secondary" id="btnReset">やり直す</button>
-    </div></div>
+
+    <!-- MBTIミニ設問（8問/2択） -->
+    <div id="mbtiBlock"></div>
+
+    <div class="card">
+      <div class="controls">
+        <button id="btnSubmit">結果を見る</button>
+        <button id="btnReset" class="secondary">やり直す</button>
+      </div>
+      <p class="muted" style="margin:8px 0 0;">※ 画像は後から設定できます（エラー時はプレースホルダー表示）。</p>
+    </div>
+
+    <!-- 結果カード -->
     <div id="resultCard" class="card" style="display:none;">
       <div class="result">
         <div class="illustWrap">
           <figure class="illust" aria-label="結果イラスト">
-            <img id="illustImg" alt="タイプに合わせたイラスト" loading="lazy" decoding="async" style="display:none;" />
-            <div class="illust ph" id="illustPh">タイプに合わせたイラストが入ります</div>
+            <img id="illustImg" alt="タイプ別イラスト" style="display:none" />
+            <div id="illustPh" class="ph">タイプ別イラストがここに表示されます</div>
           </figure>
         </div>
         <div id="resultTitle" style="font-size:1.2rem;font-weight:900;margin-bottom:6px;"></div>
-        <div id="resultDesc" class="small" style="line-height:1.9;"></div>
-        <div class="share">
-          <button class="x" id="btnShareX" title="Xでシェア"><span>𝕏</span> でシェア</button>
-          <button class="ghost" id="btnCopy">文面をコピー</button>
+        <div id="resultDesc" style="color:#555;line-height:1.9;"></div>
+
+        <hr style="border:0;border-top:1px dashed #ffd3ea;margin:12px 0">
+        <div id="mbtiLine" style="font-weight:900;margin-top:2px;"></div>
+        <div id="mbtiPraises" style="color:#444;line-height:1.9;margin-top:6px;"></div>
+        <div id="mbtiTips" style="margin-top:8px;">
+          <div style="font-weight:800;margin-bottom:4px;">PO・TOROでのおすすめの過ごし方</div>
+          <ul id="mbtiTipsList" style="margin:6px 0 0 1em; padding:0; line-height:1.9;"></ul>
         </div>
-        <div id="copyHint" class="small" style="display:none;">コピーしました。XやLINEに貼り付けてください。</div>
+
+        <div id="imgErr" class="err"></div>
       </div>
     </div>
+
     <div class="footer">© PO・TORO</div>
   </div>
+
 <script>
+/* ====== 画像の場所（後で画像を置いたら使われます） ======
+   GitHub Pagesのプロジェクト名に合わせて変更してください。
+   例：リポジトリが potro-diagnosis → BASE は "/potro-diagnosis/img/"
+*/
+const BASE = "/potro-diagnosis/img/";
 const ILLUSTRATIONS = {
-  "A": "",
-  "B": "",
-  "C": "",
-  "D": "",
-  "E": "",
-  "F": "img/type_F_support.png",
-  "G": "img/type_G_otaku.png",
+  "A": BASE + "type_A_relax.png",
+  "B": BASE + "type_B_genki.png",
+  "C": BASE + "type_C_cool.png",
+  "D": BASE + "type_D_mystic.png",
+  "E": BASE + "type_E_cute.png",
+  "F": BASE + "type_F_support.png",
+  "G": BASE + "type_G_otaku.png",
 };
+
+/* ====== 7タイプ（本文は承認・自尊心／自信／尊重／名声を満たす言い回し） ====== */
 const TYPES = [
   { key:"A", label:"ほっと一息ご主人様",
-    desc:"貴方はほっと一息ご主人様！ 自分を丁寧にいたわる知性と、周りの心まで落ち着かせる優しさを兼ね備えた、品ある存在です。静けさを選ぶ判断力に自信があり、その余裕が人からの尊重を自然と集めます。あなたの穏やかな空気感は「一緒にいるだけで整う」と評判で、小さな名場面の主役として名声も高まります。自分を大切にする選択ができる——その自尊心こそ最大の魅力。 貴方はポ・トロにとって安らぎを灯す大切な存在です！",
-    tagline:"安らぎを灯す大切な存在" },
+    desc:"貴方はほっと一息ご主人様！ 自分を丁寧にいたわる知性と、周りの心まで落ち着かせる優しさを兼ね備えた、品ある存在です。静けさを選ぶ判断力に自信があり、その余裕が人からの尊重を自然と集めます。あなたの穏やかな空気感は「一緒にいるだけで整う」と評判で、小さな名場面の主役として名声も高まります。自分を大切にする選択ができる——その自尊心こそ最大の魅力。 貴方はポ・トロにとって安らぎを灯す大切な存在です！" },
   { key:"B", label:"フルスロットルご主人様",
-    desc:"貴方はフルスロットルご主人様！ 場を晴れやかに変える明るさと瞬発力は、誰にも真似できない才能。楽しむことを選び抜く直感に自信があり、あなたのノリの良さは周囲からの尊重を引き寄せます。「あなたが来ると店が一段と輝く」と噂され、名声も自然と上昇中。自分の楽しさに責任を持てる前向きさが、健やかな自尊心を支えています。 貴方はポ・トロにとって盛り上がりの原動力となる存在です！",
-    tagline:"盛り上がりの原動力となる存在" },
+    desc:"貴方はフルスロットルご主人様！ 場を晴れやかに変える明るさと瞬発力は、誰にも真似できない才能。楽しむことを選び抜く直感に自信があり、あなたのノリの良さは周囲からの尊重を引き寄せます。「あなたが来ると店が一段と輝く」と噂され、名声も自然と上昇中。自分の楽しさに責任を持てる前向きさが、健やかな自尊心を支えています。 貴方はポ・トロにとって盛り上がりの原動力となる存在です！" },
   { key:"C", label:"静かに嗜むご主人様",
-    desc:"貴方は静かに嗜むご主人様！ 品の良い間合いと確かな審美眼を持ち、静けさの中に価値を見出せる大人の余裕派。選び取る視点にぶれない自信があり、その所作と会話の質は周囲から深い尊重を受けます。控えめでも存在感は確かで、「通だ」と一目置かれる名声を築くタイプ。自分の基準を大切にできるからこそ、しなやかな自尊心が香ります。 貴方はポ・トロにとって上質さを支える品格ある存在です！",
-    tagline:"上質さを支える品格ある存在" },
+    desc:"貴方は静かに嗜むご主人様！ 品の良い間合いと確かな審美眼を持ち、静けさの中に価値を見出せる大人の余裕派。選び取る視点にぶれない自信があり、その所作と会話の質は周囲から深い尊重を受けます。控えめでも存在感は確かで、「通だ」と一目置かれる名声を築くタイプ。自分の基準を大切にできるからこそ、しなやかな自尊心が香ります。 貴方はポ・トロにとって上質さを支える品格ある存在です！" },
   { key:"D", label:"夢見心地ご主人様",
-    desc:"貴方は夢見心地ご主人様！ 日常をたちまち物語に変える想像力と、美しい余韻を作る感性の持ち主。独自の世界観を語る言葉に自信があり、その繊細な着眼点は「もっと聞きたい」と尊重を集めます。あなたのセンスは静かに口コミで広がり、“世界観の名手”としての名声も高まります。自分の好きに胸を張れる自尊心が、唯一無二の魅力を放ちます。 貴方はポ・トロにとって世界観を紡ぐ創造的な存在です！",
-    tagline:"世界観を紡ぐ創造的な存在" },
+    desc:"貴方は夢見心地ご主人様！ 日常をたちまち物語に変える想像力と、美しい余韻を作る感性の持ち主。独自の世界観を語る言葉に自信があり、その繊細な着眼点は「もっと聞きたい」と尊重を集めます。あなたのセンスは静かに口コミで広がり、“世界観の名手”としての名声も高まります。自分の好きに胸を張れる自尊心が、唯一無二の魅力を放ちます。 貴方はポ・トロにとって世界観を紡ぐ創造的な存在です！" },
   { key:"E", label:"きゅんきゅんご主人様",
-    desc:"貴方はきゅんきゅんご主人様！ 「可愛い」をまっすぐ楽しめる素直さは、周囲の心を柔らかくするギフト。欲しい気持ちを言語化できるあなたは自分へのケアに自信があり、その無邪気さは守りたくなる魅力として尊重されます。場を和ませる“ハッピー発生源”として名声も上々。自分の心を大切にできる健やかな自尊心が、キュンの中心に灯っています。 貴方はポ・トロにとって幸せを広げる愛らしい存在です！",
-    tagline:"幸せを広げる愛らしい存在" },
+    desc:"貴方はきゅんきゅんご主人様！ 「可愛い」をまっすぐ楽しめる素直さは、周囲の心を柔らかくするギフト。欲しい気持ちを言語化できるあなたは自分へのケアに自信があり、その無邪気さは守りたくなる魅力として尊重されます。場を和ませる“ハッピー発生源”として名声も上々。自分の心を大切にできる健やかな自尊心が、キュンの中心に灯っています。 貴方はポ・トロにとって幸せを広げる愛らしい存在です！" },
   { key:"F", label:"相談ウェルカムご主人様",
-    desc:"貴方は相談ウェルカムご主人様！ 胸の内を言葉にできる誠実さと、相手を信じて頼れる強さを持つ、信頼のプロ。自分の感情を扱うリーダーシップに自信があり、その真摯さゆえに周囲から厚い尊重を受けます。人と人をやわらかくつなぐ影のキーマンとして名声も育つタイプ。自分を粗末にしない選択ができる——その健全な自尊心が、安心の輪を広げます。 貴方はポ・トロにとって安心を届ける頼れる存在です！",
-    tagline:"安心を届ける頼れる存在" },
+    desc:"貴方は相談ウェルカムご主人様！ 胸の内を言葉にできる誠実さと、相手を信じて頼れる強さを持つ、信頼のプロ。自分の感情を扱うリーダーシップに自信があり、その真摯さゆえに周囲から厚い尊重を受けます。人と人をやわらかくつなぐ影のキーマンとして名声も育つタイプ。自分を粗末にしない選択ができる——その健全な自尊心が、安心の輪を広げます。 貴方はポ・トロにとって安心を届ける頼れる存在です！" },
   { key:"G", label:"語り尽くしご主人様",
-    desc:"貴方は語り尽くしご主人様！ 推しへの深い理解と情熱を、知的に語れる“熱量のコンダクター”。積み重ねた知識に揺るぎない自信があり、解像度の高いトークは「学びがある」と尊重されます。おすすめや考察が評判になり、コミュニティでの名声も自然と上がるタイプ。自分の“好き”を誇れる堂々たる自尊心が、語りの中心で光ります。 貴方はポ・トロにとって知と情熱で場を高める核となる存在です！",
-    tagline:"知と情熱で場を高める核となる存在" },
+    desc:"貴方は語り尽くしご主人様！ 推しへの深い理解と情熱を、知的に語れる“熱量のコンダクター”。積み重ねた知識に揺るぎない自信があり、解像度の高いトークは「学びがある」と尊重されます。おすすめや考察が評判になり、コミュニティでの名声も自然と上がるタイプ。自分の“好き”を誇れる堂々たる自尊心が、語りの中心で光ります。 貴方はポ・トロにとって知と情熱で場を高める核となる存在です！" },
 ];
+
+/* ====== 9問（既存の内容を反映） ====== */
 const QUESTIONS = [
   { q:"ポ・トロにご帰宅する目的は？",
     a:[
@@ -163,7 +196,7 @@ const QUESTIONS = [
       { text:"『おかえりなさい』に安心する、頼れるメイドさんが待つ空間", typeIndex:5 },
       { text:"メイドさんと一緒に推しやアニメの話で盛り上がるオタク空間", typeIndex:6 },
     ]},
-  { q:"ポ・トロでよく飲むドリンクは？",
+  { q:"PO・TOROでよく飲むドリンクは？",
     a:[
       { text:"あたたかい紅茶やカフェオレ", typeIndex:0 },
       { text:"フルーツジュース", typeIndex:1 },
@@ -214,74 +247,195 @@ const QUESTIONS = [
       { text:"推し活トークが似合う七代目が好き", typeIndex:6 },
     ]},
 ];
-function buildShareText(type){ const url = location.href.split('#')[0];
-  return `#ポトロ診断 の結果：私は「${type.label}」！\n— ポ・トロにとって${type.tagline} —\n診断はこちら▶ ${url}`;}
+
+/* ====== MBTIミニ設問（8問/2択） ====== */
+const MBTI_QUESTIONS = [
+  { axis:"EI", a:"まず周りを巻き込んで乾杯したい！", b:"まずは静かに場の空気に馴染みたい" },
+  { axis:"EI", a:"ノリで距離を一気に縮める",         b:"相手の様子を見て自然に歩調を合わせる" },
+  { axis:"SN", a:"実物や説明で“確実”に決めたい",    b:"雰囲気や物語性で“直感”で選びたい" },
+  { axis:"SN", a:"具体的な体験を重視",               b:"世界観の没入感を重視" },
+  { axis:"TF", a:"ロジックやメリットで判断",         b:"その場の気持ち・空気感で判断" },
+  { axis:"TF", a:"整理＆結論重視の会話",              b:"共感重視の会話" },
+  { axis:"JP", a:"事前にプランを考えて動きたい",      b:"その場のひらめきで自由に変えたい" },
+  { axis:"JP", a:"早めに日時まで決めて安心したい",    b:"気分が乗ったらふらっと決めたい" },
+];
+
+/* ====== レンダリング ====== */
 const elQuiz=document.getElementById("quiz");
+const elMBTI=document.getElementById("mbtiBlock");
 const elResult=document.getElementById("resultCard");
 const elTitle=document.getElementById("resultTitle");
 const elDesc=document.getElementById("resultDesc");
-const btnX=document.getElementById("btnShareX");
-const btnCopy=document.getElementById("btnCopy");
-const copyHint=document.getElementById("copyHint");
 const illustImg=document.getElementById("illustImg");
 const illustPh=document.getElementById("illustPh");
+const imgErr=document.getElementById("imgErr");
+
 function renderQuiz(){
   elQuiz.innerHTML="";
   QUESTIONS.forEach((q,idx)=>{
-    const card=document.createElement("div"); card.className="card";
-    const qEl=document.createElement("div"); qEl.className="q"; qEl.textContent=`Q${idx+1}. ${q.q}`; card.appendChild(qEl);
-    const opts=document.createElement("div"); opts.className="opts";
+    const card=document.createElement("div");
+    card.className="card";
+    const qEl=document.createElement("div");
+    qEl.className="q";
+    qEl.textContent=`Q${idx+1}. ${q.q}`;
+    card.appendChild(qEl);
+    const opts=document.createElement("div");
+    opts.className="opts";
     q.a.forEach(opt=>{
-      const btn=document.createElement("div"); btn.className="opt"; btn.textContent=opt.text;
-      btn.setAttribute("role","button"); btn.setAttribute("tabindex","0");
-      btn.onclick=()=>{ opts.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));
-        btn.classList.add("selected"); card.dataset.answer=String(opt.typeIndex); };
-      btn.onkeydown=e=>{ if(e.key==='Enter') btn.click(); };
+      const btn=document.createElement("div");
+      btn.className="opt";
+      btn.textContent=opt.text;
+      btn.setAttribute("role","button");
+      btn.setAttribute("tabindex","0");
+      btn.onclick=()=>{
+        opts.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));
+        btn.classList.add("selected");
+        card.dataset.answer=String(opt.typeIndex);
+      };
+      btn.onkeydown=e=>{ if(e.key==="Enter") btn.click(); };
       opts.appendChild(btn);
     });
-    card.appendChild(opts); elQuiz.appendChild(card);
+    card.appendChild(opts);
+    elQuiz.appendChild(card);
   });
 }
-function computeResult(){
-  const cards=Array.from(elQuiz.querySelectorAll(".card"));
+
+function renderMBTIQuestions(){
+  elMBTI.innerHTML="";
+  MBTI_QUESTIONS.forEach((q,i)=>{
+    const wrap=document.createElement('div');
+    wrap.className='card';
+    wrap.innerHTML = `
+      <div class="q">MB${i+1}. ${q.axis}</div>
+      <div class="opts">
+        <div class="opt" data-axis="${q.axis}" data-pick="A">${q.a}</div>
+        <div class="opt" data-axis="${q.axis}" data-pick="B">${q.b}</div>
+      </div>`;
+    wrap.querySelectorAll('.opt').forEach(opt=>{
+      opt.onclick=()=>{
+        wrap.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+        opt.classList.add('selected');
+        wrap.dataset.answer = opt.getAttribute('data-pick'); // "A"/"B"
+      };
+    });
+    elMBTI.appendChild(wrap);
+  });
+}
+
+/* ====== 判定 ====== */
+function computeType(){
+  const cards=[...elQuiz.querySelectorAll(".card")];
   const counts=Array(TYPES.length).fill(0);
   for(const c of cards){
     if(!("answer" in c.dataset)) return {error:"未回答の設問があります。"};
     const t=Number(c.dataset.answer);
-    if(Number.isFinite(t) && t>=0 && t<TYPES.length) counts[t]++;
+    if(Number.isFinite(t)&&t>=0&&t<TYPES.length) counts[t]++;
   }
-  let max=-1, idx=-1; counts.forEach((v,i)=>{ if(v>max){ max=v; idx=i; } });
+  let max=-1, idx=-1;
+  counts.forEach((v,i)=>{ if(v>max){ max=v; idx=i; } });
   return { idx, counts };
 }
-let lastType=null;
-function showResult(){
-  const r=computeResult();
-  if(r.error){ alert(r.error); return; }
-  const t=TYPES[r.idx]; lastType=t;
-  const url = (ILLUSTRATIONS && ILLUSTRATIONS[t.key]) ? ILLUSTRATIONS[t.key] : "";
-  if(url){ illustImg.src=url; illustImg.style.display="block"; illustPh.style.display="none";
-    illustImg.onerror=()=>{ illustImg.style.display="none"; illustPh.style.display="flex"; }; }
-  else { illustImg.style.display="none"; illustPh.style.display="flex"; }
-  elTitle.textContent=`貴方は『${t.label}』！`; elDesc.textContent=t.desc;
-  elResult.style.display="block"; window.scrollTo({ top: elResult.offsetTop - 12, behavior:"smooth"});
+
+function computeMBTI(){
+  const cards=[...document.querySelectorAll('#mbtiBlock .card')];
+  const score={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+  for(const c of cards){
+    if(!('answer' in c.dataset)) return {error:"MBTIの未回答があります。"};
+    const opt = c.querySelector('.opt'); // for axis attr
+    const axis = opt.getAttribute('data-axis'); // "EI" 等
+    const pick = c.dataset.answer; // "A"/"B"
+    const L = axis[0], R = axis[1];
+    score[pick==='A' ? L : R] += 1;
+  }
+  const code =
+    (score.E >= score.I ? 'E':'I') +
+    (score.S >= score.N ? 'S':'N') +
+    (score.T >= score.F ? 'T':'F') +
+    (score.J >= score.P ? 'J':'P');
+
+  const pct = k => Math.round(100 * score[k] / (MBTI_QUESTIONS.filter(q=>q.axis.includes(k)).length));
+  return { code, score, pct };
 }
-function resetQuiz(){ renderQuiz(); elResult.style.display="none"; lastType=null; }
-btnCopy.addEventListener("click", async ()=>{
-  if(!lastType){ alert("先に結果をご覧ください。"); return; }
-  const text=buildShareText(lastType);
-  try{ await navigator.clipboard.writeText(text); copyHint.style.display="block"; setTimeout(()=>copyHint.style.display="none",1600); }
-  catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
-    copyHint.style.display='block'; setTimeout(()=>copyHint.style.display='none',1600); }
+
+/* ====== MBTI表示の辞書 ====== */
+const MBTI_PRAISE = {
+  E: "場を明るく巻き込む即興力が光ります。",
+  I: "静かな観察眼と細やかな気配りが際立ちます。",
+  S: "具体的な体験やディテールに強く、満足度を底上げできます。",
+  N: "世界観や物語性を楽しむ発想力が魅力です。",
+  T: "ロジカルに選べる判断力で、体験の質をブーストできます。",
+  F: "共感力が高く、場の心地よさを自然に育てられます。",
+  J: "段取りと計画性で、安心して楽しめる流れを作れます。",
+  P: "柔軟さと遊び心で、その日いちばんの楽しさを引き寄せます。"
+};
+
+const MBTI_TIPS = {
+  E: ["メイドさんとミニゲームや乾杯コールでウォームアップ","周りを巻き込むチェキ企画で思い出を量産"],
+  I: ["席の雰囲気を落ち着き寄りにして、静かな会話をじっくり","目線や小さな変化に気づく“観察プレイ”を楽しむ"],
+  S: ["おすすめメニューを“実物・材料・温度感”で詳しく聞いてみる","限定フードや旬のトピックをチェックして確実に満喫"],
+  N: ["世界観設定やBGMの裏話を深掘り、物語性に浸る","テーマ回・イベント日を狙って没入度MAXに"],
+  T: ["混雑状況や滞在プランを最適化（体験→チェキ→余韻の順）","新メニューの比較や“おすすめの根拠”を聞いて納得感をUP"],
+  F: ["気持ちのシェアを大切に、共感できる話題で心をほぐす","メイドさんの“最近うれしかったこと”を引き出して和やかに"],
+  J: ["事前に推しの出演日・席・滞在時間を決めて安心感を確保","最後に“次回の楽しみ”を1つだけ予約して余韻を延長"],
+  P: ["当日のひらめきで“やりたいことリスト”を随時更新","気になるメニューはまずは一口お試し、楽しさ優先で回遊"]
+};
+
+/* ====== MBTI結果の描画 ====== */
+function renderMBTIResult(){
+  const r = computeMBTI(); if(r.error){ alert(r.error); return; }
+  const line   = document.getElementById('mbtiLine');
+  const praises= document.getElementById('mbtiPraises');
+  const tipsUl = document.getElementById('mbtiTipsList');
+
+  line.textContent = `MBTI風傾向： ${r.code}（E${r.pct('E')}% / I${r.pct('I')}%｜S${r.pct('S')}% / N${r.pct('N')}%｜T${r.pct('T')}% / F${r.pct('F')}%｜J${r.pct('J')}% / P${r.pct('P')}%）`;
+
+  praises.textContent = r.code.split('').map(ch => MBTI_PRAISE[ch]).join(' ');
+
+  tipsUl.innerHTML = '';
+  r.code.split('').slice(0,3).forEach(ax=>{
+    (MBTI_TIPS[ax]||[]).forEach(s=>{
+      const li=document.createElement('li'); li.textContent=s; tipsUl.appendChild(li);
+    });
+  });
+}
+
+/* ====== 表示処理 ====== */
+function showResult(){
+  // 7タイプ
+  const res = computeType(); if(res.error){ alert(res.error); return; }
+  const t = TYPES[res.idx];
+
+  // 画像（後で用意したら表示）
+  const url = ILLUSTRATIONS[t.key];
+  illustImg.style.display="none"; illustPh.style.display="flex"; imgErr.textContent="";
+  illustImg.onload=()=>{ illustPh.style.display="none"; illustImg.style.display="block"; };
+  illustImg.onerror=()=>{ illustPh.style.display="flex"; imgErr.textContent = "画像が見つかりません: " + url; };
+  illustImg.src = url + "?v=" + Date.now(); // キャッシュ回避
+
+  // タイプ本文
+  document.getElementById("resultTitle").textContent=`貴方は『${t.label}』！`;
+  document.getElementById("resultDesc").textContent=t.desc;
+
+  // MBTI合成
+  renderMBTIResult();
+
+  elResult.style.display="block";
+  window.scrollTo({ top: elResult.offsetTop - 12, behavior:"smooth" });
+}
+
+function resetQuiz(){
+  renderQuiz();
+  renderMBTIQuestions();
+  elResult.style.display="none";
+}
+
+/* 初期化 */
+document.addEventListener("DOMContentLoaded", ()=>{
+  renderQuiz();
+  renderMBTIQuestions();
 });
-btnX.addEventListener("click", ()=>{
-  if(!lastType){ alert("先に結果をご覧ください。"); return; }
-  const text=encodeURIComponent(buildShareText(lastType));
-  window.open(`https://twitter.com/intent/tweet?text=${text}`,'_blank');
-});
-document.addEventListener("DOMContentLoaded", renderQuiz);
 document.getElementById("btnSubmit").addEventListener("click", showResult);
 document.getElementById("btnReset").addEventListener("click", resetQuiz);
-renderQuiz();
 </script>
-</body></html>
-
+</body>
+</html>
