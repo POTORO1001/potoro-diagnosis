@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ご主人様タイプ診断（MBTIミニ12問・レースver.）｜PO・TORO Presents</title>
-<meta name="description" content="PO・TORO Presents『ご主人様タイプ診断（MBTIミニ12問）』。MB1〜MB12の2択にお答えいただくと、MBTI風4文字タイプと各軸の傾向を表示します。">
+<meta name="description" content="PO・TORO Presents『ご主人様タイプ診断（MBTIミニ12問）』。MB1〜MB12の2択にお答えいただくと、MBTI風4文字タイプと各軸の傾向・称号を表示します。">
 <style>
   :root{
     --bg:#fff8fc; --ink:#2a2a2a; --muted:#786e75;
@@ -168,6 +168,26 @@ const MBTI_QUESTIONS = [
     b:"当日のワクワク感に合わせて機動的に動きたいです" },
 ];
 
+/* === 称号（MBTI→肩書き） === */
+const MBTI_TITLES = {
+  ESTP:"瞬発アクションのアスリートご主人様",
+  ESFP:"きゅん拡散のムードメーカーご主人様",
+  ENFP:"物語点火の自由人ご主人様",
+  ENTP:"考察花火のトリックスターご主人様",
+  ESTJ:"段取り名人のディレクターご主人様",
+  ESFJ:"場内調和のホスピタリティご主人様",
+  ENFJ:"巻き込み上手のカリスマご主人様",
+  ENTJ:"采配巧者のプロデューサーご主人様",
+  ISTP:"寡黙技巧のクラフターご主人様",
+  ISFP:"余韻を紡ぐアーティストご主人様",
+  INFP:"物語耽溺のドリーマーご主人様",
+  INTP:"分析静思のリサーチャーご主人様",
+  ISTJ:"規律堅実のエグゼクティブご主人様",
+  ISFJ:"癒し気配りのコンシェルジュご主人様",
+  INFJ:"世界観織りのメンターご主人様",
+  INTJ:"戦略設計のアーキテクトご主人様",
+};
+
 /* === レンダリング === */
 const elMBTI=document.getElementById("mbtiBlock");
 const elResult=document.getElementById("resultCard");
@@ -277,7 +297,11 @@ function renderBars(r){
 
 function showResult(){
   const r = computeMBTI(); if(r.error){ alert(r.error); return; }
-  elTitle.textContent = `ご主人様のMBTI風傾向は「${r.code}」でございます。`;
+
+  // 称号（肩書き）を付けて表示
+  const title = MBTI_TITLES[r.code] || "ご主人様";
+  elTitle.textContent = `ご主人様のMBTI風傾向は「${r.code}」でございます（称号：${title}）。`;
+
   elLine.textContent  = `E${r.pct('E')}% / I${r.pct('I')}%｜S${r.pct('S')}% / N${r.pct('N')}%｜T${r.pct('T')}% / F${r.pct('F')}%｜J${r.pct('J')}% / P${r.pct('P')}%`;
 
   renderBars(r);
