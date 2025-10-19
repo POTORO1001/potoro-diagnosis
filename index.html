@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ご主人様タイプ診断（MBTI要素入り・レースver.）｜PO・TORO Presents</title>
-<meta name="description" content="PO・TORO Presents『ご主人様タイプ診断（MBTI要素入り）』。9問＋MBTI風8問に答えるだけで、あなたのタイプとMBTI傾向を判定します。">
+<meta name="description" content="PO・TORO Presents『ご主人様タイプ診断（MBTI要素入り）』。9問＋MBTI風8問＋追加設問で、タイプとMBTI傾向を判定します。">
 <style>
   :root{
     --bg:#fff8fc; --ink:#2a2a2a; --muted:#786e75;
@@ -22,7 +22,6 @@
     background-position: 0 0, 8px 8px;
   }
   .container{max-width:960px;margin:28px auto;padding:16px}
-  /* Lace card */
   .card{
     position:relative;background:var(--card);border-radius:18px;padding:20px;margin-bottom:18px;
     box-shadow:0 10px 28px rgba(255,104,183,.18),0 6px 16px rgba(0,0,0,.06);
@@ -76,10 +75,10 @@
     <div class="card">
       <span class="ribbon">PO・TORO Presents</span>
       <h1>ご主人様タイプ診断（MBTI要素入り・レースver.）</h1>
-      <p class="lead">「貴方はどんなご主人様？」がわかる自己診断。9問＋MBTI風8問でタイプと傾向を判定します。</p>
+      <p class="lead">「貴方はどんなご主人様？」がわかる自己診断。9問＋MBTI風8問＋追加設問でタイプと傾向を判定します。</p>
     </div>
 
-    <!-- 9問ブロック（既存部分） -->
+    <!-- 7タイプ設問（Q1〜Q13） -->
     <div id="quiz"></div>
 
     <!-- MBTIミニ設問（8問/2択） -->
@@ -122,7 +121,7 @@
 
 <script>
 /* ====== 画像の場所（後で画像を置いたら使われます） ======
-   GitHub Pagesのプロジェクト名に合わせて変更してください。
+   あなたのGitHub Pagesのリポジトリ名に合わせて変更してください。
    例：リポジトリが potro-diagnosis → BASE は "/potro-diagnosis/img/"
 */
 const BASE = "/potro-diagnosis/img/";
@@ -136,7 +135,11 @@ const ILLUSTRATIONS = {
   "G": BASE + "type_G_otaku.png",
 };
 
-/* ====== 7タイプ（本文は承認・自尊心／自信／尊重／名声を満たす言い回し） ====== */
+/* === MBTI 重みづけ（調整可） === */
+const MBTI_WEIGHT_MINI = 1.0;  // ミニ設問（8問）の重み
+const MBTI_WEIGHT_MAIN = 0.5;  // 通常設問（7択）に付けた data-mbti の重み
+
+/* ====== 7タイプ（承認・自尊心・自信・尊重・名声を満たす言い回し） ====== */
 const TYPES = [
   { key:"A", label:"ほっと一息ご主人様",
     desc:"貴方はほっと一息ご主人様！ 自分を丁寧にいたわる知性と、周りの心まで落ち着かせる優しさを兼ね備えた、品ある存在です。静けさを選ぶ判断力に自信があり、その余裕が人からの尊重を自然と集めます。あなたの穏やかな空気感は「一緒にいるだけで整う」と評判で、小さな名場面の主役として名声も高まります。自分を大切にする選択ができる——その自尊心こそ最大の魅力。 貴方はポ・トロにとって安らぎを灯す大切な存在です！" },
@@ -154,98 +157,159 @@ const TYPES = [
     desc:"貴方は語り尽くしご主人様！ 推しへの深い理解と情熱を、知的に語れる“熱量のコンダクター”。積み重ねた知識に揺るぎない自信があり、解像度の高いトークは「学びがある」と尊重されます。おすすめや考察が評判になり、コミュニティでの名声も自然と上がるタイプ。自分の“好き”を誇れる堂々たる自尊心が、語りの中心で光ります。 貴方はポ・トロにとって知と情熱で場を高める核となる存在です！" },
 ];
 
-/* ====== 9問（既存の内容を反映） ====== */
+/* ====== 設問（Q1〜Q13／各選択にMBTIタグを1文字付与） ====== */
 const QUESTIONS = [
+  // Q1 目的（EI/N/F バランス）
   { q:"ポ・トロにご帰宅する目的は？",
     a:[
-      { text:"ゆったり癒されたい", typeIndex:0 },
-      { text:"思いっきり盛り上がりたい！", typeIndex:1 },
-      { text:"静かに大人っぽく過ごしたい", typeIndex:2 },
-      { text:"非日常の世界に浸りたい", typeIndex:3 },
-      { text:"可愛さで心を満たしたい", typeIndex:4 },
-      { text:"ちょっと話を聞いてほしい", typeIndex:5 },
-      { text:"推しや趣味を語りたい！", typeIndex:6 },
+      { text:"ゆったり癒されたい", typeIndex:0, mbti:"I" },
+      { text:"思いっきり盛り上がりたい！", typeIndex:1, mbti:"E" },
+      { text:"静かに大人っぽく過ごしたい", typeIndex:2, mbti:"I" },
+      { text:"非日常の世界に浸りたい", typeIndex:3, mbti:"N" },
+      { text:"可愛さで心を満たしたい", typeIndex:4, mbti:"F" },
+      { text:"ちょっと話を聞いてほしい", typeIndex:5, mbti:"F" },
+      { text:"推しや趣味を語りたい！", typeIndex:6, mbti:"N" },
     ]},
+  // Q2 お出迎えの一言（EI/N/F）
   { q:"お出迎えの際にかけられたい一言は？",
     a:[
-      { text:"ご主人様、お疲れ様です。ゆっくりしていってくださいね", typeIndex:0 },
-      { text:"やっほーっ！一緒に盛り上がっちゃいましょー！", typeIndex:1 },
-      { text:"大丈夫。今日は私に任せて安心してね", typeIndex:5 },
-      { text:"ふふっ、ご主人様だけに特別な秘密を教えちゃうかも…？", typeIndex:3 },
-      { text:"えへへ〜、来てくれてとっても嬉しいのですっ", typeIndex:4 },
-      { text:"困ったらいつでも相談してね。しっかり支えてあげるから", typeIndex:5 },
-      { text:"あのアニメ見ました！語り合えるの嬉しすぎます〜！", typeIndex:6 },
+      { text:"ご主人様、お疲れ様です。ゆっくりしていってくださいね", typeIndex:0, mbti:"I" },
+      { text:"やっほーっ！一緒に盛り上がっちゃいましょー！", typeIndex:1, mbti:"E" },
+      { text:"大丈夫。今日は私に任せて安心してね", typeIndex:5, mbti:"F" },
+      { text:"ふふっ、ご主人様だけに特別な秘密を教えちゃうかも…？", typeIndex:3, mbti:"N" },
+      { text:"えへへ〜、来てくれてとっても嬉しいのですっ", typeIndex:4, mbti:"F" },
+      { text:"困ったらいつでも相談してね。しっかり支えてあげるから", typeIndex:5, mbti:"F" },
+      { text:"あのアニメ見ました！語り合えるの嬉しすぎます〜！", typeIndex:6, mbti:"N" },
     ]},
+  // Q3 会話の雰囲気（EI/N/F）
   { q:"会話の雰囲気の理想は？",
     a:[
-      { text:"穏やかに、優しい声で", typeIndex:0 },
-      { text:"賑やかに、元気な声で", typeIndex:1 },
-      { text:"落ち着いて、トーン低めで", typeIndex:2 },
-      { text:"ささやき気味で、雰囲気重視", typeIndex:3 },
-      { text:"リアクション可愛めでキュン多め", typeIndex:4 },
-      { text:"ゆったり寄り添って丁寧に", typeIndex:5 },
-      { text:"テンポ可変、深堀りしやすく", typeIndex:6 },
+      { text:"穏やかに、優しい声で", typeIndex:0, mbti:"I" },
+      { text:"賑やかに、元気な声で", typeIndex:1, mbti:"E" },
+      { text:"落ち着いて、トーン低めで", typeIndex:2, mbti:"I" },
+      { text:"ささやき気味で、雰囲気重視", typeIndex:3, mbti:"N" },
+      { text:"リアクション可愛めでキュン多め", typeIndex:4, mbti:"F" },
+      { text:"ゆったり寄り添って丁寧に", typeIndex:5, mbti:"F" },
+      { text:"テンポ可変、深堀りしやすく", typeIndex:6, mbti:"N" },
     ]},
+  // Q4 好きな空間（E/J/N/F）
   { q:"好きな雰囲気は？",
     a:[
-      { text:"ご主人様を包み込む、ほわほわ癒し空間", typeIndex:0 },
-      { text:"みんなで『萌え萌えきゅん♪』と盛り上がるにぎやか空間", typeIndex:1 },
-      { text:"落ち着いたトーンで、お酒とお話をゆっくり楽しめる空間", typeIndex:2 },
-      { text:"ランプの光や不思議なBGMに包まれる幻想的な空間", typeIndex:3 },
-      { text:"かわいい声と仕草が飛び交う、きゅんきゅん萌え空間", typeIndex:4 },
-      { text:"『おかえりなさい』に安心する、頼れるメイドさんが待つ空間", typeIndex:5 },
-      { text:"メイドさんと一緒に推しやアニメの話で盛り上がるオタク空間", typeIndex:6 },
+      { text:"ご主人様を包み込む、ほわほわ癒し空間", typeIndex:0, mbti:"I" },
+      { text:"みんなで『萌え萌えきゅん♪』と盛り上がるにぎやか空間", typeIndex:1, mbti:"E" },
+      { text:"落ち着いたトーンで、お酒とお話をゆっくり楽しめる空間", typeIndex:2, mbti:"J" },
+      { text:"ランプの光や不思議なBGMに包まれる幻想的な空間", typeIndex:3, mbti:"N" },
+      { text:"かわいい声と仕草が飛び交う、きゅんきゅん萌え空間", typeIndex:4, mbti:"F" },
+      { text:"『おかえりなさい』に安心する、頼れるメイドさんが待つ空間", typeIndex:5, mbti:"J" },
+      { text:"メイドさんと一緒に推しやアニメの話で盛り上がるオタク空間", typeIndex:6, mbti:"N" },
     ]},
+  // Q5 ドリンク（S/E/J/N/F/T）
   { q:"PO・TOROでよく飲むドリンクは？",
     a:[
-      { text:"あたたかい紅茶やカフェオレ", typeIndex:0 },
-      { text:"フルーツジュース", typeIndex:1 },
-      { text:"ノンアルコールカクテル", typeIndex:2 },
-      { text:"冷たいコーンポタージュ", typeIndex:3 },
-      { text:"ミルクやココア", typeIndex:4 },
-      { text:"ビールやハイボール", typeIndex:5 },
-      { text:"ブラックコーヒー", typeIndex:6 },
+      { text:"あたたかい紅茶やカフェオレ", typeIndex:0, mbti:"S" },
+      { text:"フルーツジュース", typeIndex:1, mbti:"E" },
+      { text:"ノンアルコールカクテル", typeIndex:2, mbti:"J" },
+      { text:"冷たいコーンポタージュ", typeIndex:3, mbti:"N" },
+      { text:"ミルクやココア", typeIndex:4, mbti:"F" },
+      { text:"ビールやハイボール", typeIndex:5, mbti:"T" },
+      { text:"ブラックコーヒー", typeIndex:6, mbti:"T" },
     ]},
+  // Q6 一緒にしたいこと（I/E/T/N/F/J）
   { q:"メイドさんと一緒にしたいことは？",
     a:[
-      { text:"のんびりお話して、心をぽかぽか癒してほしい", typeIndex:0 },
-      { text:"チェキやゲームで、全力で盛り上がりたい！", typeIndex:1 },
-      { text:"おしゃれにドリンクを傾けながら、大人な会話を楽しみたい", typeIndex:2 },
-      { text:"非日常な世界観に二人でどっぷり浸りたい", typeIndex:3 },
-      { text:"メイドさんに甘やかされて、とことん可愛がられたい", typeIndex:4 },
-      { text:"メイドさんに相談されたり、頼ってもらいたい", typeIndex:5 },
-      { text:"推し活トークやアニメ・ゲーム談義で盛り上がりたい", typeIndex:6 },
+      { text:"のんびりお話して、心をぽかぽか癒してほしい", typeIndex:0, mbti:"I" },
+      { text:"チェキやゲームで、全力で盛り上がりたい！", typeIndex:1, mbti:"E" },
+      { text:"おしゃれにドリンクを傾けながら、大人な会話を楽しみたい", typeIndex:2, mbti:"T" },
+      { text:"非日常な世界観に二人でどっぷり浸りたい", typeIndex:3, mbti:"N" },
+      { text:"メイドさんに甘やかされて、とことん可愛がられたい", typeIndex:4, mbti:"F" },
+      { text:"メイドさんに相談されたり、頼ってもらいたい", typeIndex:5, mbti:"J" },
+      { text:"推し活トークやアニメ・ゲーム談義で盛り上がりたい", typeIndex:6, mbti:"N" },
     ]},
+  // Q7 お見送り（F/E/I/N/F/J/T）
   { q:"お見送りの際の理想は？",
     a:[
-      { text:"すっかり癒されて、笑顔で帰りたい", typeIndex:0 },
-      { text:"『楽しかったー！』と元気いっぱいで帰りたい", typeIndex:1 },
-      { text:"落ち着いた気分で『また来たいな』と思いながら帰りたい", typeIndex:2 },
-      { text:"不思議な余韻に浸りながら帰りたい", typeIndex:3 },
-      { text:"胸いっぱいに『可愛い！』を抱えて帰りたい", typeIndex:4 },
-      { text:"『やっぱり頼れるなぁ』と安心しながら帰りたい", typeIndex:5 },
-      { text:"推しや趣味の話を語り尽くして満足して帰りたい", typeIndex:6 },
+      { text:"すっかり癒されて、笑顔で帰りたい", typeIndex:0, mbti:"F" },
+      { text:"『楽しかったー！』と元気いっぱいで帰りたい", typeIndex:1, mbti:"E" },
+      { text:"落ち着いた気分で『また来たいな』と思いながら帰りたい", typeIndex:2, mbti:"I" },
+      { text:"不思議な余韻に浸りながら帰りたい", typeIndex:3, mbti:"N" },
+      { text:"胸いっぱいに『可愛い！』を抱えて帰りたい", typeIndex:4, mbti:"F" },
+      { text:"『やっぱり頼れるなぁ』と安心しながら帰りたい", typeIndex:5, mbti:"J" },
+      { text:"推しや趣味の話を語り尽くして満足して帰りたい", typeIndex:6, mbti:"T" },
     ]},
+  // Q8 推し基準（F/E/J/N/F/J/N）
   { q:"推し選ぶ基準は？",
     a:[
-      { text:"やさしい微笑みと癒しのオーラ", typeIndex:0 },
-      { text:"場を明るくする元気とテンション", typeIndex:1 },
-      { text:"落ち着きと大人の余裕", typeIndex:2 },
-      { text:"個性的でミステリアスな雰囲気", typeIndex:3 },
-      { text:"あざと可愛い仕草とキュンとさせる魅力", typeIndex:4 },
-      { text:"包み込んでくれる安心感と頼れる存在感", typeIndex:5 },
-      { text:"推しや趣味を一緒に熱く語れるトーク力", typeIndex:6 },
+      { text:"やさしい微笑みと癒しのオーラ", typeIndex:0, mbti:"F" },
+      { text:"場を明るくする元気とテンション", typeIndex:1, mbti:"E" },
+      { text:"落ち着きと大人の余裕", typeIndex:2, mbti:"J" },
+      { text:"個性的でミステリアスな雰囲気", typeIndex:3, mbti:"N" },
+      { text:"あざと可愛い仕草とキュンとさせる魅力", typeIndex:4, mbti:"F" },
+      { text:"包み込んでくれる安心感と頼れる存在感", typeIndex:5, mbti:"J" },
+      { text:"推しや趣味を一緒に熱く語れるトーク力", typeIndex:6, mbti:"N" },
     ]},
+  // Q9 制服（J/J/F/N/E/F/N）
   { q:"何代目のメイド服が好き？",
     a:[
-      { text:"やっぱり伝統の初代が好き", typeIndex:0 },
-      { text:"大人っぽい雰囲気の弐代目が好き", typeIndex:2 },
-      { text:"キュートさ全開の参代目が好き", typeIndex:4 },
-      { text:"幻想的な雰囲気の四代目が好き", typeIndex:3 },
-      { text:"元気いっぱいの五代目が好き", typeIndex:1 },
-      { text:"包容力を感じる六代目が好き", typeIndex:5 },
-      { text:"推し活トークが似合う七代目が好き", typeIndex:6 },
+      { text:"やっぱり伝統の初代が好き", typeIndex:0, mbti:"J" },
+      { text:"大人っぽい雰囲気の弐代目が好き", typeIndex:2, mbti:"J" },
+      { text:"キュートさ全開の参代目が好き", typeIndex:4, mbti:"F" },
+      { text:"幻想的な雰囲気の四代目が好き", typeIndex:3, mbti:"N" },
+      { text:"元気いっぱいの五代目が好き", typeIndex:1, mbti:"E" },
+      { text:"包容力を感じる六代目が好き", typeIndex:5, mbti:"F" },
+      { text:"推し活トークが似合う七代目が好き", typeIndex:6, mbti:"N" },
     ]},
+  // Q10（EI軸）
+  {
+    q: "ご帰宅して最初にしたいことは？",
+    a: [
+      { text: "メイドさんと元気に乾杯して一気に場を明るくしたい！", typeIndex: 1, mbti: "E" },
+      { text: "静かに深呼吸して、席でゆっくり空気に馴染みたい",       typeIndex: 2, mbti: "I" },
+      { text: "まずは温かいお茶でほっと落ち着きを取り戻したい",       typeIndex: 0, mbti: "I" },
+      { text: "世界観の小物や装飾を眺めて気分を高めたい",             typeIndex: 3, mbti: "I" },
+      { text: "キュートな決めポーズで開幕チェキを撮りたい",           typeIndex: 4, mbti: "E" },
+      { text: "今日の調子や相談ごとを軽く話して気持ちを整えたい",       typeIndex: 5, mbti: "I" },
+      { text: "推しや最新アニメの話題でさっそく語り始めたい",           typeIndex: 6, mbti: "E" },
+    ]
+  },
+  // Q11（SN軸）
+  {
+    q: "メニューや体験を選ぶとき、どちらが決め手？",
+    a: [
+      { text: "実物の説明・味・価格など“確実な情報”で決めたい",       typeIndex: 2, mbti: "S" },
+      { text: "雰囲気・世界観・物語性など“ときめき直感”で決めたい",     typeIndex: 3, mbti: "N" },
+      { text: "安らぎ効果や体験後の気持ちを想像して選びたい",           typeIndex: 0, mbti: "S" },
+      { text: "場が盛り上がるか・写真映えするかで選びたい",             typeIndex: 1, mbti: "N" },
+      { text: "可愛い要素・キュン度の高さを最優先したい",               typeIndex: 4, mbti: "N" },
+      { text: "その人に合うか“実用面（喉/体調/時間）”で判断したい",     typeIndex: 5, mbti: "S" },
+      { text: "設定・制作裏話・ネタ性があるものを選びたい",             typeIndex: 6, mbti: "N" },
+    ]
+  },
+  // Q12（TF軸）
+  {
+    q: "メイドさんから別メニューや席替えを提案されたら？",
+    a: [
+      { text: "混雑・費用・体験効率など“根拠”を聞いて決めたい",         typeIndex: 2, mbti: "T" },
+      { text: "今の気持ちや相手の様子など“雰囲気”で柔らかく決めたい",   typeIndex: 5, mbti: "F" },
+      { text: "写真や盛り上がりに繋がるなら“即断GO”でいきたい",         typeIndex: 1, mbti: "T" },
+      { text: "相手が楽しそうなら“その笑顔に乗っかりたい”",             typeIndex: 4, mbti: "F" },
+      { text: "新しい世界観に浸れそうなら“少し賭けても挑戦したい”",     typeIndex: 3, mbti: "T" },
+      { text: "体調や時間配分を優先して“無理なくいける範囲”で選ぶ",     typeIndex: 0, mbti: "F" },
+      { text: "考察・ネタ的に面白いなら“理由を共有して一緒に決めたい”", typeIndex: 6, mbti: "T" },
+    ]
+  },
+  // Q13（JP軸）チェキの撮り方
+  {
+    q: "チェキの撮り方、今日はどれが気分？",
+    a: [
+      { text: "定番ポーズをあらかじめ決めて、バランスよく撮りたい",     typeIndex: 2, mbti: "J" },
+      { text: "その場のノリで思いついた面白ポーズに挑戦したい！",         typeIndex: 1, mbti: "P" },
+      { text: "世界観に合わせた小物や構図で“作品感”を出したい",           typeIndex: 3, mbti: "N" },
+      { text: "キュートなハートやほっぺ寄せなど“ときめき重視”で撮りたい", typeIndex: 4, mbti: "F" },
+      { text: "落ち着いた距離感で“雰囲気の良い”1枚を丁寧に残したい",       typeIndex: 0, mbti: "I" },
+      { text: "今日の思い出を言葉でも残せるよう、メッセージ入りにしたい",   typeIndex: 5, mbti: "J" },
+      { text: "推し作品のポーズ再現や小ネタで“語れるチェキ”にしたい",     typeIndex: 6, mbti: "T" },
+    ]
+  },
 ];
 
 /* ====== MBTIミニ設問（8問/2択） ====== */
@@ -287,6 +351,7 @@ function renderQuiz(){
       btn.textContent=opt.text;
       btn.setAttribute("role","button");
       btn.setAttribute("tabindex","0");
+      btn.dataset.mbti = opt.mbti || "";   // ★ MBTIタグ
       btn.onclick=()=>{
         opts.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));
         btn.classList.add("selected");
@@ -322,7 +387,7 @@ function renderMBTIQuestions(){
   });
 }
 
-/* ====== 判定 ====== */
+/* ====== 7タイプ判定 ====== */
 function computeType(){
   const cards=[...elQuiz.querySelectorAll(".card")];
   const counts=Array(TYPES.length).fill(0);
@@ -336,24 +401,56 @@ function computeType(){
   return { idx, counts };
 }
 
+/* ====== MBTI合算（重み対応） ====== */
 function computeMBTI(){
-  const cards=[...document.querySelectorAll('#mbtiBlock .card')];
-  const score={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-  for(const c of cards){
+  const score = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+
+  // (A) ミニ設問（8問/2択）
+  const mbCards = [...document.querySelectorAll('#mbtiBlock .card')];
+  for(const c of mbCards){
     if(!('answer' in c.dataset)) return {error:"MBTIの未回答があります。"};
-    const opt = c.querySelector('.opt'); // for axis attr
-    const axis = opt.getAttribute('data-axis'); // "EI" 等
-    const pick = c.dataset.answer; // "A"/"B"
+    const opt  = c.querySelector('.opt');               // 軸ラベルを読むため
+    const axis = opt.getAttribute('data-axis');         // 例: "EI"
+    const pick = c.dataset.answer;                      // "A" or "B"
     const L = axis[0], R = axis[1];
-    score[pick==='A' ? L : R] += 1;
+    score[pick==='A' ? L : R] += MBTI_WEIGHT_MINI;
   }
+
+  // (B) 通常設問の data-mbti も合算
+  const mainCards = [...document.querySelectorAll('#quiz .card')];
+  for(const c of mainCards){
+    const sel = c.querySelector('.opt.selected');
+    if(!sel) return {error:"未回答の設問があります。"};
+    const tag = (sel.dataset.mbti || "").trim();       // 例: "E" や "N"
+    if(tag && score.hasOwnProperty(tag)){
+      score[tag] += MBTI_WEIGHT_MAIN;
+    }
+  }
+
+  // 4文字タイプ生成（大きい方を採用／同点は左優先）
   const code =
     (score.E >= score.I ? 'E':'I') +
     (score.S >= score.N ? 'S':'N') +
     (score.T >= score.F ? 'T':'F') +
     (score.J >= score.P ? 'J':'P');
 
-  const pct = k => Math.round(100 * score[k] / (MBTI_QUESTIONS.filter(q=>q.axis.includes(k)).length));
+  // % 表示（重み総和で割る）
+  const totalEI = score.E + score.I || 1;
+  const totalSN = score.S + score.N || 1;
+  const totalTF = score.T + score.F || 1;
+  const totalJP = score.J + score.P || 1;
+
+  const pct = (k) => {
+    if(k==='E') return Math.round(100 * score.E / totalEI);
+    if(k==='I') return Math.round(100 * score.I / totalEI);
+    if(k==='S') return Math.round(100 * score.S / totalSN);
+    if(k==='N') return Math.round(100 * score.N / totalSN);
+    if(k==='T') return Math.round(100 * score.T / totalTF);
+    if(k==='F') return Math.round(100 * score.F / totalTF);
+    if(k==='J') return Math.round(100 * score.J / totalJP);
+    if(k==='P') return Math.round(100 * score.P / totalJP);
+  };
+
   return { code, score, pct };
 }
 
@@ -380,7 +477,7 @@ const MBTI_TIPS = {
   P: ["当日のひらめきで“やりたいことリスト”を随時更新","気になるメニューはまずは一口お試し、楽しさ優先で回遊"]
 };
 
-/* ====== MBTI結果の描画 ====== */
+/* ====== 結果描画 ====== */
 function renderMBTIResult(){
   const r = computeMBTI(); if(r.error){ alert(r.error); return; }
   const line   = document.getElementById('mbtiLine');
