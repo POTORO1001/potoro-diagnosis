@@ -2,30 +2,82 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>ご主人様タイプ診断｜PO・TORO Presents</title>
 <meta name="description" content="PO・TORO Presents『ご主人様タイプ診断（MBTIミニ12問）』。MB1〜MB12の2択にお答えいただくと、MBTI風4文字タイプと各軸の傾向・称号を表示します。">
+<meta name="theme-color" content="#ff68b7" />
 <style>
   :root{
-    --bg:#fff8fc; --ink:#2a2a2a; --muted:#786e75;
-    --accent:#ff68b7; --accent-2:#ff4ea9;
-    --card:#fff; --lace:#ffd3ea; --lace-2:#ffe6f3;
+    --bg:#fff8fc;
+    --ink:#2a2a2a;
+    --muted:#786e75;
+
+    --accent:#ff68b7;
+    --accent-2:#ff4ea9;
+    --sky:#6aa7ff;
+
+    --card:#ffffff;
+    --lace:#ffd3ea;
+    --lace-2:#ffe6f3;
+
+    --ring: rgba(255,104,183,.22);
+    --shadow: 0 12px 30px rgba(255,104,183,.18), 0 8px 18px rgba(0,0,0,.06);
+    --radius: 18px;
+
+    --tap: 56px; /* タップしやすさ */
   }
-  html,body{
-    margin:0; padding:0; color:var(--ink);
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo","Helvetica Neue",Arial,sans-serif;
     background: var(--bg);
     background-image:
-      radial-gradient(rgba(255,168,214,.25) 1px, transparent 1px),
-      radial-gradient(rgba(255,168,214,.18) 1px, transparent 1px);
-    background-size: 16px 16px, 24px 24px;
-    background-position: 0 0, 8px 8px;
+      radial-gradient(rgba(255,168,214,.24) 1px, transparent 1px),
+      radial-gradient(rgba(255,168,214,.14) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,0));
+    background-size: 16px 16px, 28px 28px, auto;
+    background-position: 0 0, 8px 10px, 0 0;
   }
-  .container{max-width:960px;margin:28px auto;padding:16px}
+
+  a{color:inherit}
+  .container{max-width:980px;margin:22px auto;padding:14px 14px 28px}
+  @media (min-width:760px){ .container{padding:18px 18px 34px} }
+
+  /* ヘッダーの装飾（ふわっと） */
+  .hero{
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before,
+  .hero::after{
+    content:"";
+    position:absolute;
+    width:220px;height:220px;border-radius:50%;
+    filter: blur(1px);
+    opacity:.55;
+    pointer-events:none;
+  }
+  .hero::before{
+    right:-90px; top:-90px;
+    background: radial-gradient(circle at 30% 30%, rgba(255,104,183,.55), rgba(255,104,183,0) 62%);
+  }
+  .hero::after{
+    left:-90px; bottom:-120px;
+    background: radial-gradient(circle at 30% 30%, rgba(106,167,255,.45), rgba(106,167,255,0) 62%);
+  }
+
   .card{
-    position:relative;background:var(--card);border-radius:18px;padding:20px;margin-bottom:18px;
-    box-shadow:0 10px 28px rgba(255,104,183,.18),0 6px 16px rgba(0,0,0,.06);
-    border:14px solid transparent;
+    position:relative;
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:18px;
+    margin:0 0 14px;
+    box-shadow:var(--shadow);
+    border: 12px solid transparent;
+
+    /* レース枠（あなたの雰囲気を維持しつつ、少し軽量に） */
     border-image-source:url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'>\
 <defs>\
@@ -37,69 +89,408 @@
 </defs>\
 <rect x='0' y='0' width='64' height='64' fill='url(%23lace)'/>\
 </svg>");
-    border-image-slice: 32; border-image-repeat: round;
+    border-image-slice: 32;
+    border-image-repeat: round;
   }
-  .ribbon{
-    display:inline-block; background:linear-gradient(180deg,var(--accent),var(--accent-2)); color:#fff;
-    font-weight:900; padding:10px 16px; border-radius:12px; box-shadow:0 8px 16px rgba(255,104,183,.35);
-  }
-  h1{font-size:1.85rem;margin:8px 0 6px;font-weight:900;letter-spacing:.5px}
-  .lead{color:var(--muted); margin:0}
 
-  .q{margin:16px 0 12px;font-weight:800}
-  .opts{display:grid;grid-template-columns:1fr;gap:9px}
+  .topRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .ribbon{
+    display:inline-flex; align-items:center; gap:8px;
+    background:linear-gradient(180deg,var(--accent),var(--accent-2));
+    color:#fff;
+    font-weight:900;
+    padding:10px 14px;
+    border-radius:999px;
+    box-shadow:0 10px 18px rgba(255,104,183,.34);
+    letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  .ribbon .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:rgba(255,255,255,.95);
+    box-shadow:0 0 0 4px rgba(255,255,255,.25);
+  }
+
+  h1{
+    font-size:1.85rem;
+    margin:10px 0 6px;
+    font-weight:1000;
+    letter-spacing:.6px;
+  }
+  .lead{color:var(--muted); margin:0; line-height:1.9}
+  .miniHelp{
+    margin-top:12px;
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    color:#5f565d;
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap:8px;
+    border:1px solid #f3cfe2;
+    background: linear-gradient(180deg,#fff,#fff6fb);
+    padding:8px 12px;
+    border-radius:999px;
+    font-weight:800;
+    font-size:.92rem;
+  }
+  .pill b{color:var(--accent)}
+  .progressWrap{
+    flex:1;
+    min-width: 240px;
+    display:flex; gap:10px; align-items:center;
+  }
+  .progress{
+    position:relative;
+    height:12px;
+    flex:1;
+    border-radius:999px;
+    background:#ffe6f3;
+    overflow:hidden;
+    border:1px solid #ffd3ea;
+  }
+  .progress > i{
+    position:absolute; inset:0 auto 0 0;
+    width:0%;
+    background: linear-gradient(90deg, rgba(255,104,183,.95), rgba(106,167,255,.85));
+    border-radius:999px;
+    transition: width .25s ease;
+  }
+  .progressText{
+    font-weight:900;
+    font-size:.92rem;
+    white-space:nowrap;
+  }
+
+  /* 設問 */
+  .qHead{
+    display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .qNo{
+    font-weight:1000;
+    color:#fff;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    padding:8px 12px;
+    border-radius:12px;
+    box-shadow:0 8px 16px rgba(255,104,183,.25);
+    min-width: 78px;
+    text-align:center;
+  }
+  .q{
+    margin:0;
+    font-weight:1000;
+    line-height:1.6;
+    font-size:1.05rem;
+  }
+  .subLine{
+    margin:8px 0 0;
+    color:var(--muted);
+    font-size:.95rem;
+    line-height:1.7;
+  }
+
+  .opts{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:12px;
+  }
   @media (min-width:760px){ .opts{grid-template-columns:1fr 1fr} }
+
   .opt{
-    border:1.8px solid #f7d9eb; border-radius:12px; padding:12px 14px; background:#fff; cursor:pointer; user-select:none;
-    transition:transform .06s ease, border-color .2s ease, background .2s ease;
+    border:2px solid #f7d9eb;
+    border-radius:14px;
+    padding:14px 14px;
+    background:#fff;
+    cursor:pointer;
+    user-select:none;
+    min-height: var(--tap);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    transition:transform .08s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    outline:none;
+    position:relative;
   }
   .opt:hover{ transform: translateY(-1px); }
-  .opt.selected{ border-color:var(--accent); background:#fff2f8; }
+  .opt:active{ transform: translateY(0px) scale(.99); }
+  .opt .badge{
+    width:34px;height:34px;border-radius:12px;
+    display:grid;place-items:center;
+    font-weight:1000;
+    color:#fff;
+    background: linear-gradient(180deg, rgba(255,104,183,.95), rgba(255,78,169,.95));
+    box-shadow:0 10px 16px rgba(255,104,183,.24);
+    flex:0 0 auto;
+  }
+  .opt .txt{
+    line-height:1.55;
+    font-weight:850;
+  }
 
-  .controls{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-  button{appearance:none;border:none;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;background:var(--accent);color:#fff;box-shadow:0 6px 20px rgba(255,104,183,.35)}
-  button.secondary{background:#f3f3f3;color:#333;box-shadow:none}
+  .opt.selected{
+    border-color: var(--accent);
+    background: linear-gradient(180deg,#fff2f8,#ffffff);
+    box-shadow: 0 0 0 4px var(--ring), 0 10px 18px rgba(255,104,183,.14);
+  }
+  .opt.selected .badge{
+    background: linear-gradient(180deg, rgba(106,167,255,.95), rgba(255,104,183,.92));
+  }
 
-  .result{border:2px dashed var(--lace);border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff,#fff6fb)}
-  .footer{text-align:center;color:#777;font-size:.9rem;margin-top:10px}
+  /* キーボードでも選べるように */
+  .opt:focus-visible{
+    box-shadow: 0 0 0 4px rgba(106,167,255,.22), 0 10px 18px rgba(255,104,183,.12);
+    border-color: rgba(106,167,255,.9);
+  }
+
+  /* 固定ボトム操作 */
+  .stickyBar{
+    position: sticky;
+    bottom: 10px;
+    z-index: 10;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.72);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,211,234,.9);
+    box-shadow: 0 14px 30px rgba(0,0,0,.08);
+  }
+  .stickyLeft{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    color:#6a6067;
+    font-weight:900;
+  }
+  .stickyLeft .hint{
+    display:inline-flex; gap:8px; align-items:center;
+    background: linear-gradient(180deg,#fff,#fff6fb);
+    border:1px solid #f3cfe2;
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:.92rem;
+  }
+  .stickyLeft .hint i{
+    width:10px;height:10px;border-radius:50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(255,104,183,.18);
+    display:inline-block;
+  }
+  .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+
+  button{
+    appearance:none;
+    border:none;
+    border-radius:999px;
+    padding:14px 18px;
+    font-weight:1000;
+    cursor:pointer;
+    min-height: var(--tap);
+    color:#fff;
+    background: linear-gradient(180deg,var(--accent),var(--accent-2));
+    box-shadow:0 10px 22px rgba(255,104,183,.35);
+    transition: transform .08s ease, filter .2s ease, opacity .2s ease;
+  }
+  button:hover{ filter: brightness(1.02); transform: translateY(-1px); }
+  button:active{ transform: translateY(0px) scale(.99); }
+  button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+    box-shadow:none;
+  }
+  button.secondary{
+    background:#f3f3f3;
+    color:#333;
+    box-shadow:none;
+  }
+  button.secondary:hover{ filter:none; }
+
+  /* 結果 */
+  .resultWrap{
+    border:2px dashed var(--lace);
+    border-radius:16px;
+    padding:16px;
+    background: linear-gradient(180deg,#fff,#fff6fb);
+  }
+  .resultTitle{
+    font-size:1.15rem;
+    font-weight:1000;
+    margin:0 0 6px;
+    line-height:1.6;
+  }
+  .mbtiLine{
+    font-weight:1000;
+    margin:8px 0 0;
+    color:#3a3338;
+    line-height:1.7;
+  }
+  .bars{display:grid;gap:8px;margin-top:12px}
+  .barRow{
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  .barRow .k{
+    width:22px; font-weight:1000;
+  }
+  .barTrack{
+    flex:1;
+    min-width: 160px;
+    height:12px;
+    border-radius:999px;
+    overflow:hidden;
+    border:1px solid #ffd3ea;
+    background:#ffe6f3;
+  }
+  .barFill{height:100%; width:0%}
+  .barPct{
+    width:44px;
+    text-align:right;
+    font-weight:1000;
+    color:#4a4248;
+  }
+  .barSep{width:12px}
+  .barTrack.blue{
+    border-color: rgba(106,167,255,.35);
+    background:#e7efff;
+  }
+
+  .praises{
+    color:#444;
+    line-height:1.95;
+    margin-top:12px;
+  }
+
+  .tipsBox{
+    margin-top:12px;
+    border-radius:16px;
+    border:1px solid #ffd3ea;
+    background:#fff;
+    padding:14px 14px 10px;
+  }
+  .tipsTitle{
+    font-weight:1000;
+    margin:0 0 8px;
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  .tipsTitle .spark{
+    width:18px;height:18px;border-radius:8px;
+    background: linear-gradient(180deg, rgba(255,104,183,.95), rgba(106,167,255,.85));
+    box-shadow: 0 10px 18px rgba(255,104,183,.18);
+  }
+  ul{margin:6px 0 0 1.1em; padding:0; line-height:1.9}
+
+  /* トースト */
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:18px;
+    transform:translateX(-50%);
+    z-index:999;
+    background: rgba(42,42,42,.92);
+    color:#fff;
+    padding:12px 14px;
+    border-radius:14px;
+    box-shadow: 0 18px 36px rgba(0,0,0,.22);
+    font-weight:900;
+    letter-spacing:.2px;
+    display:none;
+    max-width:min(560px, calc(100vw - 24px));
+  }
+  .toast.show{
+    display:block;
+    animation: pop .18s ease, fadeout .35s ease 2.6s forwards;
+  }
+  @keyframes pop{
+    from{ transform: translateX(-50%) translateY(6px); opacity:0 }
+    to{ transform: translateX(-50%) translateY(0); opacity:1 }
+  }
+  @keyframes fadeout{
+    to{ opacity:0; transform: translateX(-50%) translateY(6px); }
+  }
+
+  .footer{
+    text-align:center;
+    color:#777;
+    font-size:.9rem;
+    margin-top:14px;
+    opacity:.9;
+  }
+
+  /* アニメ苦手な方向け */
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; animation:none !important; scroll-behavior:auto !important}
+  }
 </style>
 </head>
+
 <body>
   <div class="container">
-    <div class="card">
-      <span class="ribbon">PO・TORO Presents</span>
+
+    <div class="card hero" id="topCard">
+      <div class="topRow">
+        <span class="ribbon"><span class="dot"></span>PO・TORO Presents</span>
+        <div class="miniHelp" style="margin:0;">
+          <span class="pill">設問 <b>12問</b>（2択）</span>
+          <span class="pill">所要 <b>約1分</b></span>
+        </div>
+      </div>
+
       <h1>ご主人様タイプ診断</h1>
-      <p class="lead">ご主人様、MB1〜MB12の二択にお答えくださいませ。PO・TOROでの過ごし方にぴったりな傾向を、丁重にご提示いたします。</p>
+      <p class="lead">
+        ご主人様、MB1〜MB12の二択にお答えくださいませ。<br>
+        PO・TOROでの過ごし方にぴったりな傾向を、丁重にご提示いたします。
+      </p>
+
+      <div class="miniHelp">
+        <div class="progressWrap" aria-label="回答進捗">
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0">
+            <i id="progressBar"></i>
+          </div>
+          <div class="progressText" id="progressText">0 / 12</div>
+        </div>
+        <span class="pill">未回答は自動でご案内します</span>
+      </div>
     </div>
 
     <!-- MBTIミニ設問のみ（MB1〜MB12） -->
     <div id="mbtiBlock"></div>
 
-    <div class="card">
+    <!-- 固定ボトム操作（診断/リセット） -->
+    <div class="stickyBar" aria-label="操作バー">
+      <div class="stickyLeft">
+        <span class="hint"><i></i> すべて回答すると「診断する」が有効になります</span>
+      </div>
       <div class="controls">
-        <button id="btnSubmit">診断する</button>
-        <button id="btnReset" class="secondary">最初からもう一度</button>
+        <button id="btnSubmit" disabled>診断する</button>
+        <button id="btnReset" class="secondary" type="button">最初からもう一度</button>
       </div>
     </div>
 
     <!-- 結果カード（MBTIのみ） -->
     <div id="resultCard" class="card" style="display:none;">
-      <div class="result">
-        <div id="resultTitle" style="font-size:1.2rem;font-weight:900;margin-bottom:6px;"></div>
-        <div id="mbtiLine" style="font-weight:900;margin-top:2px;"></div>
+      <div class="resultWrap">
+        <p class="resultTitle" id="resultTitle"></p>
+        <div class="mbtiLine" id="mbtiLine"></div>
 
-        <div id="mbtiBars" style="display:grid;gap:6px;margin-top:10px"></div>
+        <div class="bars" id="mbtiBars"></div>
 
-        <div id="mbtiPraises" style="color:#444;line-height:1.9;margin-top:10px;"></div>
-        <div id="mbtiTips" style="margin-top:10px;">
-          <div style="font-weight:800;margin-bottom:6px;">PO・TOROでのおすすめの過ごし方（ご主人様向け）</div>
-          <ul id="mbtiTipsList" style="margin:6px 0 0 1em; padding:0; line-height:1.9;"></ul>
+        <div class="praises" id="mbtiPraises"></div>
+
+        <div class="tipsBox" id="mbtiTips">
+          <div class="tipsTitle">
+            <span class="spark"></span>
+            <span>PO・TOROでのおすすめの過ごし方（ご主人様向け）</span>
+          </div>
+          <ul id="mbtiTipsList"></ul>
         </div>
       </div>
     </div>
 
     <div class="footer">© PO・TORO</div>
   </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 /* === MBTI 重み（ミニ設問のみなので 1.0 のままでOK） === */
@@ -188,67 +579,6 @@ const MBTI_TITLES = {
   INTJ:"戦略設計のアーキテクトご主人様",
 };
 
-/* === レンダリング === */
-const elMBTI=document.getElementById("mbtiBlock");
-const elResult=document.getElementById("resultCard");
-const elTitle=document.getElementById("resultTitle");
-const elLine=document.getElementById("mbtiLine");
-const elBars=document.getElementById("mbtiBars");
-const elPraises=document.getElementById("mbtiPraises");
-const elTips=document.getElementById("mbtiTipsList");
-
-function renderMBTIQuestions(container){
-  container.innerHTML = "";
-  MBTI_QUESTIONS.forEach((q,i)=>{
-    const wrap=document.createElement('div');
-    wrap.className='card';
-    wrap.innerHTML = `
-      <div class="q">MB${i+1}. ${q.q}</div>
-      <div class="opts">
-        <div class="opt" data-axis="${q.axis}" data-pick="A">${q.a}</div>
-        <div class="opt" data-axis="${q.axis}" data-pick="B">${q.b}</div>
-      </div>`;
-    wrap.querySelectorAll('.opt').forEach(opt=>{
-      opt.onclick=()=>{
-        wrap.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
-        opt.classList.add('selected');
-        wrap.dataset.answer = opt.getAttribute('data-pick'); // "A"/"B"
-      };
-    });
-    container.appendChild(wrap);
-  });
-}
-
-/* === 判定（MBTIのみ） === */
-function computeMBTI(){
-  const cards=[...document.querySelectorAll('#mbtiBlock .card')];
-  const score={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-  for(const c of cards){
-    if(!('answer' in c.dataset)) return {error:"未回答の設問があります。"};
-    const axis = c.querySelector('.opt').getAttribute('data-axis'); // "EI"など
-    const pick = c.dataset.answer; // "A" or "B"
-    const L = axis[0], R = axis[1];
-    score[pick==='A' ? L : R] += MBTI_WEIGHT_MINI;
-  }
-  const code =
-    (score.E >= score.I ? 'E':'I') +
-    (score.S >= score.N ? 'S':'N') +
-    (score.T >= score.F ? 'T':'F') +
-    (score.J >= score.P ? 'J':'P');
-
-  const total = {
-    EI: score.E + score.I || 1,
-    SN: score.S + score.N || 1,
-    TF: score.T + score.F || 1,
-    JP: score.J + score.P || 1,
-  };
-  const pct = k => {
-    const group = (k==='E'||k==='I')?'EI':(k==='S'||k==='N')?'SN':(k==='T'||k==='F')?'TF':'JP';
-    return Math.round(100 * score[k] / total[group]);
-  };
-  return { code, score, pct };
-}
-
 /* === 表示用の辞書（ご主人様口調） === */
 const MBTI_PRAISE = {
   E: "ご主人様は場を明るく巻き込む即興力に長けていらっしゃいます。",
@@ -273,36 +603,209 @@ const MBTI_TIPS = {
   P: ["当日のひらめきで“やりたいことリスト”を随時更新","気になるメニューはまず一口お試し、楽しさ優先で回遊"]
 };
 
+/* === DOM === */
+const elMBTI   = document.getElementById("mbtiBlock");
+const elResult = document.getElementById("resultCard");
+const elTitle  = document.getElementById("resultTitle");
+const elLine   = document.getElementById("mbtiLine");
+const elBars   = document.getElementById("mbtiBars");
+const elPraises= document.getElementById("mbtiPraises");
+const elTips   = document.getElementById("mbtiTipsList");
+
+const btnSubmit = document.getElementById("btnSubmit");
+const btnReset  = document.getElementById("btnReset");
+
+const elProgBar  = document.getElementById("progressBar");
+const elProgText = document.getElementById("progressText");
+const toastEl    = document.getElementById("toast");
+
+/* === UI util === */
+let toastTimer = null;
+function toast(msg){
+  if(toastTimer) clearTimeout(toastTimer);
+  toastEl.textContent = msg;
+  toastEl.classList.remove("show");
+  // reflow
+  void toastEl.offsetWidth;
+  toastEl.classList.add("show");
+  toastTimer = setTimeout(()=> toastEl.classList.remove("show"), 3100);
+}
+
+function updateProgress(){
+  const cards = [...document.querySelectorAll('#mbtiBlock .qCard')];
+  const answered = cards.filter(c => ('answer' in c.dataset)).length;
+  const total = MBTI_QUESTIONS.length;
+
+  elProgText.textContent = `${answered} / ${total}`;
+  const pct = Math.round(100 * answered / total);
+  elProgBar.style.width = `${pct}%`;
+
+  const progWrap = elProgBar.closest('.progress').parentElement.querySelector('.progress');
+  if(progWrap){
+    progWrap.setAttribute('aria-valuenow', String(answered));
+  }
+
+  const all = answered === total;
+  btnSubmit.disabled = !all;
+}
+
+/* === レンダリング === */
+function renderMBTIQuestions(container){
+  container.innerHTML = "";
+
+  MBTI_QUESTIONS.forEach((q,i)=>{
+    const wrap = document.createElement('div');
+    wrap.className = 'card qCard';
+    wrap.dataset.index = String(i);
+
+    wrap.innerHTML = `
+      <div class="qHead">
+        <div class="qNo">MB${i+1}</div>
+        <div style="flex:1;min-width:220px">
+          <p class="q">${q.q}</p>
+          <p class="subLine">どちらが“今のご主人様”に近いか、直感でお選びくださいませ。</p>
+        </div>
+      </div>
+      <div class="opts" role="group" aria-label="MB${i+1} 選択肢">
+        <div class="opt" tabindex="0" role="button" aria-pressed="false" data-axis="${q.axis}" data-pick="A">
+          <span class="badge">A</span>
+          <span class="txt">${q.a}</span>
+        </div>
+        <div class="opt" tabindex="0" role="button" aria-pressed="false" data-axis="${q.axis}" data-pick="B">
+          <span class="badge">B</span>
+          <span class="txt">${q.b}</span>
+        </div>
+      </div>
+    `;
+
+    const opts = wrap.querySelectorAll('.opt');
+
+    function select(opt){
+      opts.forEach(o=>{
+        o.classList.remove('selected');
+        o.setAttribute('aria-pressed','false');
+      });
+      opt.classList.add('selected');
+      opt.setAttribute('aria-pressed','true');
+      wrap.dataset.answer = opt.getAttribute('data-pick'); // "A"/"B"
+      updateProgress();
+    }
+
+    opts.forEach(opt=>{
+      opt.addEventListener('click', ()=> select(opt));
+      opt.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          select(opt);
+        }
+        // 矢印で移動
+        if(e.key === 'ArrowRight' || e.key === 'ArrowDown'){
+          e.preventDefault();
+          (opts[1] || opts[0]).focus();
+        }
+        if(e.key === 'ArrowLeft' || e.key === 'ArrowUp'){
+          e.preventDefault();
+          (opts[0] || opts[1]).focus();
+        }
+      });
+    });
+
+    container.appendChild(wrap);
+  });
+
+  updateProgress();
+}
+
+/* === 判定（MBTIのみ） === */
+function computeMBTI(){
+  const cards = [...document.querySelectorAll('#mbtiBlock .qCard')];
+  const score = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+
+  for(const c of cards){
+    if(!('answer' in c.dataset)) return {error:"未回答の設問があります。"};
+
+    const anyOpt = c.querySelector('.opt'); // axis 取得用
+    const axis = anyOpt.getAttribute('data-axis'); // "EI"など
+    const pick = c.dataset.answer; // "A" or "B"
+    const L = axis[0], R = axis[1];
+
+    score[pick==='A' ? L : R] += MBTI_WEIGHT_MINI;
+  }
+
+  const code =
+    (score.E >= score.I ? 'E':'I') +
+    (score.S >= score.N ? 'S':'N') +
+    (score.T >= score.F ? 'T':'F') +
+    (score.J >= score.P ? 'J':'P');
+
+  const total = {
+    EI: score.E + score.I || 1,
+    SN: score.S + score.N || 1,
+    TF: score.T + score.F || 1,
+    JP: score.J + score.P || 1,
+  };
+
+  const pct = k => {
+    const group = (k==='E'||k==='I')?'EI':(k==='S'||k==='N')?'SN':(k==='T'||k==='F')?'TF':'JP';
+    return Math.round(100 * score[k] / total[group]);
+  };
+
+  return { code, score, pct };
+}
+
+/* === 未回答へスクロール案内 === */
+function scrollToFirstUnanswered(){
+  const cards = [...document.querySelectorAll('#mbtiBlock .qCard')];
+  const target = cards.find(c => !('answer' in c.dataset));
+  if(!target) return false;
+
+  toast("未回答の設問がございます。こちらから順にお願いいたします…♡");
+  target.scrollIntoView({behavior:"smooth", block:"start"});
+  // 少し上に余白
+  window.scrollBy({top:-10, left:0, behavior:"smooth"});
+  // 最初の選択肢へフォーカス
+  const focusOpt = target.querySelector('.opt');
+  if(focusOpt) focusOpt.focus({preventScroll:true});
+  return true;
+}
+
 /* === 結果描画 === */
 function renderBars(r){
-  elBars.innerHTML = [
-    ['E','I'], ['S','N'], ['T','F'], ['J','P']
-  ].map(([L,R])=>{
+  const rows = [['E','I'], ['S','N'], ['T','F'], ['J','P']];
+
+  elBars.innerHTML = rows.map(([L,R])=>{
     const lp = r.pct(L), rp = r.pct(R);
+
     return `
-      <div style="display:flex;gap:8px;align-items:center">
-        <span style="width:22px">${L}</span>
-        <div style="flex:1;height:10px;background:#ffe6f3;border-radius:8px;overflow:hidden">
-          <div style="height:100%;width:${lp}%;background:#ff68b7"></div>
+      <div class="barRow">
+        <span class="k">${L}</span>
+        <div class="barTrack" aria-label="${L} ${lp}%">
+          <div class="barFill" style="width:${lp}%; background: linear-gradient(90deg, rgba(255,104,183,.95), rgba(255,78,169,.95));"></div>
         </div>
-        <span style="width:40px;text-align:right">${lp}%</span>
-        <span style="width:10px"></span>
-        <span style="width:22px">${R}</span>
-        <div style="flex:1;height:10px;background:#e7efff;border-radius:8px;overflow:hidden">
-          <div style="height:100%;width:${rp}%;background:#6aa7ff"></div>
+        <span class="barPct">${lp}%</span>
+
+        <span class="barSep"></span>
+
+        <span class="k">${R}</span>
+        <div class="barTrack blue" aria-label="${R} ${rp}%">
+          <div class="barFill" style="width:${rp}%; background: linear-gradient(90deg, rgba(106,167,255,.92), rgba(106,167,255,.78));"></div>
         </div>
-        <span style="width:40px;text-align:right">${rp}%</span>
-      </div>`;
+        <span class="barPct">${rp}%</span>
+      </div>
+    `;
   }).join('');
 }
 
 function showResult(){
-  const r = computeMBTI(); if(r.error){ alert(r.error); return; }
+  const r = computeMBTI();
+  if(r.error){
+    scrollToFirstUnanswered();
+    return;
+  }
 
-  // 称号（肩書き）を付けて表示
   const title = MBTI_TITLES[r.code] || "ご主人様";
-  elTitle.textContent = `ご主人様のMBTI風傾向は「${r.code}」でございます（称号：${title}）。`;
 
+  elTitle.textContent = `ご主人様のMBTI風傾向は「${r.code}」でございます（称号：${title}）。`;
   elLine.textContent  = `E${r.pct('E')}% / I${r.pct('I')}%｜S${r.pct('S')}% / N${r.pct('N')}%｜T${r.pct('T')}% / F${r.pct('F')}%｜J${r.pct('J')}% / P${r.pct('P')}%`;
 
   renderBars(r);
@@ -312,25 +815,32 @@ function showResult(){
   elTips.innerHTML = '';
   r.code.split('').slice(0,3).forEach(ax=>{
     (MBTI_TIPS[ax]||[]).forEach(s=>{
-      const li=document.createElement('li'); li.textContent=s; elTips.appendChild(li);
+      const li = document.createElement('li');
+      li.textContent = s;
+      elTips.appendChild(li);
     });
   });
 
-  elResult.style.display="block";
-  window.scrollTo({ top: elResult.offsetTop - 12, behavior:"smooth" });
+  elResult.style.display = "block";
+  toast("診断結果をお届けします…♡");
+  elResult.scrollIntoView({ behavior:"smooth", block:"start" });
+  window.scrollBy({ top:-10, left:0, behavior:"smooth" });
 }
 
 function resetQuiz(){
   renderMBTIQuestions(elMBTI);
-  elResult.style.display="none";
+  elResult.style.display = "none";
+  toast("最初からご案内いたします…♡");
+  document.getElementById("topCard").scrollIntoView({behavior:"smooth", block:"start"});
 }
 
 /* 初期化 */
 document.addEventListener("DOMContentLoaded", ()=>{
   renderMBTIQuestions(elMBTI);
 });
-document.getElementById("btnSubmit").addEventListener("click", showResult);
-document.getElementById("btnReset").addEventListener("click", resetQuiz);
+
+btnSubmit.addEventListener("click", showResult);
+btnReset.addEventListener("click", resetQuiz);
 </script>
 </body>
 </html>
