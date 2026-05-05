@@ -380,6 +380,116 @@
   }
   ul{margin:6px 0 0 1.1em; padding:0; line-height:1.9}
 
+
+
+  /* ブラッシュアップ追加：未回答強調 */
+  .qCard.unansweredAlert{
+    border-image-source:none;
+    border:3px solid rgba(255,78,78,.95);
+    box-shadow:0 0 0 5px rgba(255,78,78,.14), var(--shadow);
+    animation: unansweredPulse .9s ease-in-out 0s 2;
+  }
+  @keyframes unansweredPulse{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-2px); }
+  }
+
+  /* ブラッシュアップ追加：結果内カード */
+  .resultExtraGrid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:12px;
+  }
+  @media (min-width:760px){ .resultExtraGrid{grid-template-columns:1fr 1fr} }
+  .resultMiniCard{
+    border:1px solid #ffd3ea;
+    border-radius:16px;
+    background:linear-gradient(180deg,#fff,#fff7fc);
+    padding:14px;
+    line-height:1.85;
+  }
+  .resultMiniTitle{
+    font-weight:1000;
+    margin:0 0 6px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .resultMiniTitle::before{
+    content:"";
+    width:12px;height:12px;border-radius:50%;
+    background:linear-gradient(180deg,var(--accent),var(--sky));
+    box-shadow:0 0 0 4px rgba(255,104,183,.15);
+    flex:0 0 auto;
+  }
+  .resultMiniText{
+    margin:0;
+    color:#4b4249;
+    font-weight:800;
+  }
+
+  /* ブラッシュアップ追加：診断演出 */
+  .diagnosisOverlay{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:none;
+    place-items:center;
+    background:rgba(255,248,252,.82);
+    backdrop-filter:blur(8px);
+    padding:20px;
+  }
+  .diagnosisOverlay.show{display:grid;}
+  .diagnosisBox{
+    width:min(460px, calc(100vw - 28px));
+    border-radius:24px;
+    background:#fff;
+    border:2px solid #ffd3ea;
+    box-shadow:0 24px 60px rgba(255,104,183,.28), 0 14px 30px rgba(0,0,0,.08);
+    padding:26px 20px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .diagnosisBox::before{
+    content:"";
+    position:absolute;
+    inset:-80px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,104,183,.25), transparent 26%),
+      radial-gradient(circle at 80% 30%, rgba(106,167,255,.22), transparent 28%),
+      radial-gradient(circle at 50% 90%, rgba(255,211,234,.35), transparent 32%);
+    animation: floatGlow 1.6s ease-in-out infinite alternate;
+  }
+  @keyframes floatGlow{
+    from{transform:translateY(0) rotate(0deg)}
+    to{transform:translateY(-8px) rotate(2deg)}
+  }
+  .diagnosisInner{position:relative;z-index:1;}
+  .magicCircle{
+    width:74px;height:74px;
+    margin:0 auto 12px;
+    border-radius:50%;
+    border:6px solid #ffe0f1;
+    border-top-color:var(--accent);
+    border-right-color:var(--sky);
+    animation:spin .9s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .diagnosisTitle{
+    margin:0;
+    font-size:1.25rem;
+    font-weight:1000;
+    color:#352b32;
+  }
+  .diagnosisText{
+    margin:8px 0 0;
+    color:var(--muted);
+    font-weight:850;
+    line-height:1.8;
+  }
+
   /* トースト */
   .toast{
     position:fixed;
@@ -477,6 +587,17 @@
 
         <div class="praises" id="mbtiPraises"></div>
 
+        <div class="resultExtraGrid">
+          <div class="resultMiniCard">
+            <p class="resultMiniTitle">メイド評価コメント</p>
+            <p class="resultMiniText" id="maidComment"></p>
+          </div>
+          <div class="resultMiniCard">
+            <p class="resultMiniTitle">相性の良いメイドタイプ</p>
+            <p class="resultMiniText" id="maidMatch"></p>
+          </div>
+        </div>
+
         <div class="tipsBox" id="mbtiTips">
           <div class="tipsTitle">
             <span class="spark"></span>
@@ -488,6 +609,16 @@
     </div>
 
     <div class="footer">© PO・TORO</div>
+  </div>
+
+  <div class="diagnosisOverlay" id="diagnosisOverlay" aria-hidden="true">
+    <div class="diagnosisBox" role="status" aria-live="polite">
+      <div class="diagnosisInner">
+        <div class="magicCircle" aria-hidden="true"></div>
+        <p class="diagnosisTitle">診断中です…♡</p>
+        <p class="diagnosisText">ご主人様のタイプを、メイドが丁重にお調べしております。</p>
+      </div>
+    </div>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -579,6 +710,46 @@ const MBTI_TITLES = {
   INTJ:"戦略設計のアーキテクトご主人様",
 };
 
+/* === ブラッシュアップ追加：メイド評価コメント === */
+const MAID_COMMENTS = {
+  ESTP:"ご主人様は一瞬で場を動かす勢いが魅力でございます。迷わず楽しみに飛び込む姿に、メイドもつい笑顔になってしまいます…♡",
+  ESFP:"ご主人様は空気を明るくする天才でございます。チェキも会話も、その場を“思い出”に変える力をお持ちです…♡",
+  ENFP:"ご主人様はときめきを見つけるのがとてもお上手でございます。お屋敷の物語を一緒に広げてくださる、特別な存在でございます…♡",
+  ENTP:"ご主人様は会話の展開が軽やかで、メイドの発想まで引き出してくださいます。考察も冗談も楽しめる、刺激的なご主人様でございます…♡",
+  ESTJ:"ご主人様は段取り上手で、限られたご滞在時間をきれいに楽しみ切れる方でございます。頼もしさがにじみ出ております…♡",
+  ESFJ:"ご主人様は周りへの気配りが自然で、場をやさしく整えてくださいます。メイドも安心してお給仕できます…♡",
+  ENFJ:"ご主人様は人の心をふわっと引き上げる力をお持ちです。お屋敷全体を明るい方向へ導いてくださいます…♡",
+  ENTJ:"ご主人様は楽しみ方の設計がとてもお上手でございます。推し活もイベントも、勝ち筋を見つけるセンスが抜群です…♡",
+  ISTP:"ご主人様は落ち着いた観察眼とこだわりが魅力でございます。静かに楽しみながらも、要所でセンスが光ります…♡",
+  ISFP:"ご主人様は空気や余韻を大切にされる、やわらかな感性の持ち主でございます。自然体の楽しみ方がとても素敵です…♡",
+  INFP:"ご主人様は世界観への入り込み方が美しく、ひとつひとつの体験を大切な物語にしてくださいます…♡",
+  INTP:"ご主人様は知的な視点でお屋敷を楽しんでくださいます。細かな設定や会話の奥行きに気づいてくださるのが嬉しいです…♡",
+  ISTJ:"ご主人様は誠実で安定感があり、毎回のご帰宅を丁寧に楽しんでくださる方でございます。信頼感が抜群です…♡",
+  ISFJ:"ご主人様はやさしさと気配りがにじみ出る癒し系でございます。メイドの小さな変化にも気づいてくださるのが素敵です…♡",
+  INFJ:"ご主人様は静かな深みと世界観への理解力をお持ちです。言葉の奥にある気持ちまで受け取ってくださいます…♡",
+  INTJ:"ご主人様は全体を見通す力があり、楽しみ方にも戦略性がございます。こだわり抜いたご帰宅プランがとても映えます…♡"
+};
+
+/* === ブラッシュアップ追加：相性の良いメイドタイプ === */
+const MAID_MATCHES = {
+  ESTP:"ノリ良く反応してくれる、リアクション上手な元気系メイド",
+  ESFP:"一緒に盛り上がれる、チェキ映え提案が得意なアイドル系メイド",
+  ENFP:"世界観を一緒に広げてくれる、妄想トーク上手な物語系メイド",
+  ENTP:"掛け合いが強い、ツッコミもボケもできる頭の回転が速いメイド",
+  ESTJ:"段取りよく案内してくれる、しっかり者の進行上手メイド",
+  ESFJ:"空気を読んで場を整えてくれる、包容力のあるお世話系メイド",
+  ENFJ:"会話を広げて気持ちを引き出してくれる、聞き上手なカリスマ系メイド",
+  ENTJ:"提案力が高く、イベントやチェキの作戦を一緒に組めるプロデュース系メイド",
+  ISTP:"距離感を大切にしてくれる、落ち着いた職人気質メイド",
+  ISFP:"ゆったり寄り添ってくれる、癒しと余韻を作るふんわり系メイド",
+  INFP:"世界観や感情を丁寧に受け止めてくれる、物語共感型メイド",
+  INTP:"設定や考察を一緒に楽しめる、知的でマイペースな研究型メイド",
+  ISTJ:"約束や流れを大切にしてくれる、安心感のある正統派メイド",
+  ISFJ:"細かな気遣いで包んでくれる、やさしい癒し系メイド",
+  INFJ:"静かな会話でも深く通じ合える、ミステリアスな聞き上手メイド",
+  INTJ:"こだわりを理解し、最適な楽しみ方を提案してくれる参謀型メイド"
+};
+
 /* === 表示用の辞書（ご主人様口調） === */
 const MBTI_PRAISE = {
   E: "ご主人様は場を明るく巻き込む即興力に長けていらっしゃいます。",
@@ -610,6 +781,8 @@ const elTitle  = document.getElementById("resultTitle");
 const elLine   = document.getElementById("mbtiLine");
 const elBars   = document.getElementById("mbtiBars");
 const elPraises= document.getElementById("mbtiPraises");
+const elMaidComment = document.getElementById("maidComment");
+const elMaidMatch   = document.getElementById("maidMatch");
 const elTips   = document.getElementById("mbtiTipsList");
 
 const btnSubmit = document.getElementById("btnSubmit");
@@ -618,6 +791,7 @@ const btnReset  = document.getElementById("btnReset");
 const elProgBar  = document.getElementById("progressBar");
 const elProgText = document.getElementById("progressText");
 const toastEl    = document.getElementById("toast");
+const diagnosisOverlay = document.getElementById("diagnosisOverlay");
 
 /* === UI util === */
 let toastTimer = null;
@@ -688,7 +862,13 @@ function renderMBTIQuestions(container){
       opt.classList.add('selected');
       opt.setAttribute('aria-pressed','true');
       wrap.dataset.answer = opt.getAttribute('data-pick'); // "A"/"B"
+      wrap.classList.remove('unansweredAlert');
       updateProgress();
+
+      const next = wrap.nextElementSibling;
+      if(next && next.classList.contains('qCard')){
+        setTimeout(()=> next.scrollIntoView({behavior:"smooth", block:"start"}), 120);
+      }
     }
 
     opts.forEach(opt=>{
@@ -759,7 +939,9 @@ function scrollToFirstUnanswered(){
   const target = cards.find(c => !('answer' in c.dataset));
   if(!target) return false;
 
-  toast("未回答の設問がございます。こちらから順にお願いいたします…♡");
+  document.querySelectorAll('#mbtiBlock .qCard.unansweredAlert').forEach(c=>c.classList.remove('unansweredAlert'));
+  target.classList.add('unansweredAlert');
+  toast("未回答の設問がございます。赤枠の設問からお願いいたします…♡");
   target.scrollIntoView({behavior:"smooth", block:"start"});
   // 少し上に余白
   window.scrollBy({top:-10, left:0, behavior:"smooth"});
@@ -796,21 +978,17 @@ function renderBars(r){
   }).join('');
 }
 
-function showResult(){
-  const r = computeMBTI();
-  if(r.error){
-    scrollToFirstUnanswered();
-    return;
-  }
-
+function renderResult(r){
   const title = MBTI_TITLES[r.code] || "ご主人様";
 
-  elTitle.textContent = `ご主人様のMBTI風傾向は「${r.code}」でございます（称号：${title}）。`;
-  elLine.textContent  = `E${r.pct('E')}% / I${r.pct('I')}%｜S${r.pct('S')}% / N${r.pct('N')}%｜T${r.pct('T')}% / F${r.pct('F')}%｜J${r.pct('J')}% / P${r.pct('P')}%`;
+  elTitle.textContent = `ご主人様のタイプは「${title}」でございます。`;
+  elLine.textContent  = `MBTI風傾向：${r.code}｜E${r.pct('E')}% / I${r.pct('I')}%｜S${r.pct('S')}% / N${r.pct('N')}%｜T${r.pct('T')}% / F${r.pct('F')}%｜J${r.pct('J')}% / P${r.pct('P')}%`;
 
   renderBars(r);
 
   elPraises.textContent = r.code.split('').map(ch => MBTI_PRAISE[ch]).join(' ');
+  elMaidComment.textContent = MAID_COMMENTS[r.code] || "ご主人様らしい魅力が、お屋敷でもきっと輝きます…♡";
+  elMaidMatch.textContent = MAID_MATCHES[r.code] || "ご主人様のペースに寄り添えるメイド";
 
   elTips.innerHTML = '';
   r.code.split('').slice(0,3).forEach(ax=>{
@@ -827,6 +1005,24 @@ function showResult(){
   window.scrollBy({ top:-10, left:0, behavior:"smooth" });
 }
 
+function showResult(){
+  const r = computeMBTI();
+  if(r.error){
+    scrollToFirstUnanswered();
+    return;
+  }
+
+  diagnosisOverlay.classList.add("show");
+  diagnosisOverlay.setAttribute("aria-hidden", "false");
+  btnSubmit.disabled = true;
+
+  setTimeout(()=>{
+    diagnosisOverlay.classList.remove("show");
+    diagnosisOverlay.setAttribute("aria-hidden", "true");
+    btnSubmit.disabled = false;
+    renderResult(r);
+  }, 1350);
+}
 function resetQuiz(){
   renderMBTIQuestions(elMBTI);
   elResult.style.display = "none";
@@ -840,7 +1036,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
 });
 
 btnSubmit.addEventListener("click", showResult);
-btnReset.addEventListener("click", resetQuiz);
+btnReset.addEventListener("click", ()=>{
+  if(confirm("本当に最初からやり直しますか？")){
+    resetQuiz();
+  }
+});
 </script>
 </body>
 </html>
